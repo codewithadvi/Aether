@@ -101,9 +101,13 @@ export default function AppLayout() {
         <main
           className="flex-1 lg:ml-72 bg-[var(--bg)] relative min-h-screen transition-colors duration-500"
           style={{
-            backgroundImage: isDashboardRoute
-              ? 'radial-gradient(ellipse at top right, rgba(227, 215, 184, 0.34) 0%, rgba(42, 105, 123, 0.1) 45%, transparent 75%), linear-gradient(180deg, #fef9f1 0%, #f8f3eb 100%)'
-              : 'radial-gradient(ellipse at top right, rgba(227, 215, 184, 0.24) 0%, rgba(42, 105, 123, 0.08) 50%, rgba(9, 44, 69, 0.05) 100%), linear-gradient(180deg, #fef9f1 0%, #f8f3eb 100%)',
+            backgroundImage: isDark
+              ? (isDashboardRoute
+                ? 'radial-gradient(ellipse at top right, rgba(127, 193, 220, 0.22) 0%, rgba(42, 105, 123, 0.24) 48%, rgba(9, 44, 69, 0.4) 100%), linear-gradient(180deg, #0b1218 0%, #0f1a24 100%)'
+                : 'radial-gradient(ellipse at top right, rgba(127, 193, 220, 0.16) 0%, rgba(42, 105, 123, 0.22) 52%, rgba(9, 44, 69, 0.5) 100%), linear-gradient(180deg, #0b1218 0%, #101d29 100%)')
+              : (isDashboardRoute
+                ? 'radial-gradient(ellipse at top right, rgba(227, 215, 184, 0.34) 0%, rgba(42, 105, 123, 0.1) 45%, transparent 75%), linear-gradient(180deg, #fef9f1 0%, #f8f3eb 100%)'
+                : 'radial-gradient(ellipse at top right, rgba(227, 215, 184, 0.24) 0%, rgba(42, 105, 123, 0.08) 50%, rgba(9, 44, 69, 0.05) 100%), linear-gradient(180deg, #fef9f1 0%, #f8f3eb 100%)'),
           }}
         >
            <Outlet />

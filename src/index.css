@@ -39,6 +39,40 @@
   --header-height: 80px;
 }
 
+html.dark {
+  color-scheme: dark;
+}
+
+.dark {
+  --bg: #0b1218;
+  --bg-card: #111a23;
+  --bg-panel: #162331;
+  --bg-hover: #1b2a39;
+  --border: rgba(126, 152, 178, 0.35);
+  --border-subtle: rgba(126, 152, 178, 0.2);
+
+  --text: #e8eef5;
+  --text-muted: #bfccda;
+  --text-dim: #8ea2b8;
+
+  --primary: #7fc1dc;
+  --primary-light: #96d0e7;
+  --primary-glow: rgba(127, 193, 220, 0.2);
+  --primary-text: #08131b;
+
+  --accent: #89c5a8;
+  --accent-glow: rgba(137, 197, 168, 0.2);
+
+  --success: #74d39b;
+  --warning: #f3c77a;
+  --danger: #f08f8f;
+  --info: #8ea2b8;
+
+  --shadow: 0 10px 26px rgba(0, 0, 0, 0.35);
+  --shadow-lg: 0 24px 60px rgba(0, 0, 0, 0.45);
+  --glow: 0 0 0 1px rgba(127, 193, 220, 0.22), 0 12px 30px rgba(0, 0, 0, 0.3);
+}
+
 html { font-size: 16px; scroll-behavior: smooth; }
 
 body {
@@ -48,6 +82,11 @@ body {
   min-height: 100vh;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+}
+
+.dark body {
+  background: var(--bg);
+  color: var(--text);
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -73,6 +112,57 @@ input, textarea, select {
 input:focus, textarea:focus, select:focus {
   border-color: var(--primary);
   box-shadow: 0 0 0 3px var(--primary-glow);
+}
+
+.dark input,
+.dark textarea,
+.dark select {
+  background: var(--bg-card);
+  border-color: var(--border);
+  color: var(--text);
+}
+
+.dark input::placeholder,
+.dark textarea::placeholder {
+  color: var(--text-dim);
+}
+
+/*
+  The app uses many hardcoded light-mode Tailwind arbitrary classes.
+  These targeted overrides remap common light tokens to dark equivalents.
+*/
+.dark [class*='bg-[#fef9f1'] { background-color: #0e1822 !important; }
+.dark [class*='bg-[#f8f3eb'] { background-color: #121e2a !important; }
+.dark [class*='bg-[#ece8e0'] { background-color: #152331 !important; }
+.dark [class*='bg-white/'] { background-color: rgba(20, 31, 43, 0.82) !important; }
+.dark [class*='bg-white'] { background-color: #162433 !important; }
+
+.dark [class*='text-[#1d1c17'] { color: #e8eef5 !important; }
+.dark [class*='text-[#0f172a'] { color: #e2eaf3 !important; }
+.dark [class*='text-[#475569'] { color: #b5c6d7 !important; }
+.dark [class*='text-[#86736e'] { color: #9bb0c6 !important; }
+.dark [class*='text-[#64748b'] { color: #a8bacc !important; }
+.dark [class*='text-[#94a3b8'] { color: #8ea3b9 !important; }
+
+.dark [class*='border-[#d9c1bc'] { border-color: rgba(126, 152, 178, 0.35) !important; }
+.dark [class*='border-[#e2e8f0'] { border-color: rgba(126, 152, 178, 0.28) !important; }
+
+.dark [class*='from-[#e3d7b8'] { --tw-gradient-from: rgba(116, 150, 184, 0.2) var(--tw-gradient-from-position) !important; }
+.dark [class*='via-[#2a697b'] { --tw-gradient-stops: var(--tw-gradient-from), rgba(42, 105, 123, 0.22) var(--tw-gradient-via-position), var(--tw-gradient-to) !important; }
+.dark [class*='to-[#092c45'] { --tw-gradient-to: rgba(9, 44, 69, 0.55) var(--tw-gradient-to-position) !important; }
+
+.dark [class*='shadow-'] {
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35) !important;
+}
+
+.dark .btn-primary {
+  background: #7fc1dc;
+  border-color: #7fc1dc;
+  color: #08131b;
+}
+
+.dark .btn-primary:hover {
+  background: #96d0e7;
 }
 
 /* Scrollbar */
