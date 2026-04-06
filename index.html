@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Aether — Research Paper Tracker</title>
+    <!-- Stitch Design System Injection -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;family=Inter:wght@300;400;700&amp;family=JetBrains+Mono:wght@300;400&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "secondary-fixed": "#dee5cf",
+                        "on-primary": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "tertiary": "#4a4540",
+                        "primary-fixed-dim": "#ffb4a2",
+                        "primary-fixed": "#ffdad2",
+                        "on-secondary-container": "#5e6553",
+                        "surface-bright": "#fef9f1",
+                        "error": "#ba1a1a",
+                        "background": "#fef9f1",
+                        "outline-variant": "#d9c1bc",
+                        "secondary-container": "#dce2cc",
+                        "on-secondary-fixed": "#171d10",
+                        "on-tertiary-container": "#ded5ce",
+                        "surface": "#fef9f1",
+                        "outline": "#86736e",
+                        "tertiary-fixed": "#eae1da",
+                        "surface-container-high": "#ece8e0",
+                        "surface-variant": "#e7e2da",
+                        "on-primary-container": "#ffcbbe",
+                        "on-error-container": "#93000a",
+                        "on-tertiary-fixed": "#1f1b17",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed-variant": "#723425",
+                        "tertiary-fixed-dim": "#cec5be",
+                        "on-surface-variant": "#53433f",
+                        "primary-container": "#8e4a39",
+                        "inverse-primary": "#ffb4a2",
+                        "inverse-surface": "#32302b",
+                        "on-secondary-fixed-variant": "#424939",
+                        "surface-container-low": "#f8f3eb",
+                        "surface-container": "#f2ede5",
+                        "surface-tint": "#904b3a",
+                        "surface-container-highest": "#e7e2da",
+                        "on-tertiary-fixed-variant": "#4b4641",
+                        "tertiary-container": "#625c57",
+                        "inverse-on-surface": "#f5f0e8",
+                        "secondary-fixed-dim": "#c2c9b4",
+                        "primary": "#713324",
+                        "surface-dim": "#ded9d2",
+                        "on-primary-fixed": "#3a0a02",
+                        "on-surface": "#1d1c17",
+                        "on-error": "#ffffff",
+                        "secondary": "#5a614f",
+                        "surface-container-lowest": "#ffffff",
+                        "on-background": "#1d1c17"
+                    },
+                    fontFamily: {
+                        "headline": ["Newsreader", "serif"],
+                        "body": ["Newsreader", "serif"],
+                        "label": ["Inter", "monospace"],
+                        "mono": ["JetBrains Mono", "monospace"]
+                    },
+                    borderRadius: { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" },
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 200, 'GRAD' 0, 'opsz' 24;
+            font-size: 20px;
+        }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

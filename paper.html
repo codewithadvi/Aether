@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Margin Paper Detail View</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "secondary-fixed": "#dee5cf",
+                        "on-primary": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "tertiary": "#4a4540",
+                        "primary-fixed-dim": "#ffb4a2",
+                        "primary-fixed": "#ffdad2",
+                        "on-secondary-container": "#5e6553",
+                        "surface-bright": "#fef9f1",
+                        "error": "#ba1a1a",
+                        "background": "#fef9f1",
+                        "outline-variant": "#d9c1bc",
+                        "secondary-container": "#dce2cc",
+                        "on-secondary-fixed": "#171d10",
+                        "on-tertiary-container": "#ded5ce",
+                        "surface": "#fef9f1",
+                        "outline": "#86736e",
+                        "tertiary-fixed": "#eae1da",
+                        "surface-container-high": "#ece8e0",
+                        "surface-variant": "#e7e2da",
+                        "on-primary-container": "#ffcbbe",
+                        "on-error-container": "#93000a",
+                        "on-tertiary-fixed": "#1f1b17",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed-variant": "#723425",
+                        "tertiary-fixed-dim": "#cec5be",
+                        "on-surface-variant": "#53433f",
+                        "primary-container": "#8e4a39",
+                        "inverse-primary": "#ffb4a2",
+                        "inverse-surface": "#32302b",
+                        "on-secondary-fixed-variant": "#424939",
+                        "surface-container-low": "#f8f3eb",
+                        "surface-container": "#f2ede5",
+                        "surface-tint": "#904b3a",
+                        "surface-container-highest": "#e7e2da",
+                        "on-tertiary-fixed-variant": "#4b4641",
+                        "tertiary-container": "#625c57",
+                        "inverse-on-surface": "#f5f0e8",
+                        "secondary-fixed-dim": "#c2c9b4",
+                        "primary": "#713324",
+                        "surface-dim": "#ded9d2",
+                        "on-primary-fixed": "#3a0a02",
+                        "on-surface": "#1d1c17",
+                        "on-error": "#ffffff",
+                        "secondary": "#5a614f",
+                        "surface-container-lowest": "#ffffff",
+                        "on-background": "#1d1c17"
+                    },
+                    fontFamily: {
+                        "headline": ["Newsreader", "serif"],
+                        "body": ["Newsreader", "serif"],
+                        "label": ["Inter", "monospace"]
+                    },
+                    borderRadius: { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" },
+                },
+            },
+        }
+    </script>
+<style>.material-symbols-outlined {
+    font-variation-settings: "FILL" 0, "wght" 300, "GRAD" 0, "opsz" 24
+    }
+.paper-grain {
+    background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuCEpIz_lpi5pbyf2-BVWke4f35OQykSxVTW_76VtgHiy9hcYnRCdXGx-ne5jfD7CZfAGfOMXZZM2iti6TTp_ydT44EYytIgtILf-OboqSu0gRLn5Kvrqzv53WSixiyZ061mvhk0zNyuY3n_waOwSi3wuko4vzotRuqWnvWMX5xM11Y4Ldk3jhFpn3hvn9AXGUEo_MY5NrGx1EPxcO6h5kKKNgxRwnWd2kOc6kcc1bJTDNE_l2Cq_Sh8W0ZAr9hNif_lzp46WG3G5xI)
+    }
+.handwritten {
+    font-family: "Newsreader", serif;
+    font-style: italic;
+    letter-spacing: -0.01em
+    }
+.ink-line {
+    border-left: 0.5pt solid #86736e
+    }
+.highlight-amber {
+    background-color: rgba(255, 203, 190, 0.4);
+    box-shadow: 0 0 4px rgba(255, 203, 190, 0.2)
+    }</style>
+</head>
+<body class="bg-surface font-body text-on-surface selection:bg-primary-fixed selection:text-on-primary-fixed-variant">
+<!-- Top Navigation Bar -->
+<header class="bg-[#fef9f1] dark:bg-[#1d1c17] flex justify-between items-center w-full px-12 py-8 max-w-[1600px] mx-auto border-b-0">
+<div class="flex items-center gap-4">
+<span class="text-3xl font-serif italic text-[#1d1c17] dark:text-[#fef9f1]">Margin</span>
+<div class="hidden md:flex gap-8 items-center ml-12">
+<a class="text-[#713324] dark:text-[#d9c1bc] font-bold underline decoration-0.5pt hover:text-[#713324] transition-colors duration-400" href="#">The Archive</a>
+<a class="text-[#1d1c17] dark:text-[#ece8e0] opacity-70 hover:text-[#713324] transition-colors duration-400" href="#">Marginalia</a>
+<a class="text-[#1d1c17] dark:text-[#ece8e0] opacity-70 hover:text-[#713324] transition-colors duration-400" href="#">Collection</a>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<span class="font-label text-[10px] uppercase tracking-widest opacity-50">AM</span>
+<span class="material-symbols-outlined text-[#713324]" data-icon="light_mode">light_mode</span>
+<button class="bg-primary text-on-primary px-5 py-2 text-sm rounded-sm font-label uppercase tracking-tighter">New Entry</button>
+</div>
+</header>
+<div class="flex min-h-screen">
+<!-- Side Navigation Shell -->
+<nav class="hidden lg:flex fixed left-0 top-0 h-screen flex-col py-10 px-6 bg-[#f8f3eb] dark:bg-[#2a2924] w-72 z-40">
+<div class="mb-12">
+<h2 class="text-xl font-serif text-[#1d1c17] dark:text-[#fef9f1]">The Margin</h2>
+<p class="font-label text-[10px] uppercase tracking-widest text-secondary mt-1">Archival Records</p>
+</div>
+<div class="flex flex-col gap-6">
+<a class="text-[#1d1c17] dark:text-[#86736e] pl-4 hover:bg-[#ece8e0] transition-all duration-400 font-label text-xs uppercase tracking-wider" href="#">Collection</a>
+<a class="text-[#1d1c17] dark:text-[#86736e] pl-4 hover:bg-[#ece8e0] transition-all duration-400 font-label text-xs uppercase tracking-wider" href="#">Marginalia</a>
+<a class="text-[#713324] dark:text-[#d9c1bc] border-l-2 border-[#713324] pl-4 italic font-label text-xs uppercase tracking-wider" href="#">The Archive</a>
+<a class="text-[#1d1c17] dark:text-[#86736e] pl-4 hover:bg-[#ece8e0] transition-all duration-400 font-label text-xs uppercase tracking-wider" href="#">The Reading Shelf</a>
+</div>
+<div class="mt-auto flex flex-col gap-4 border-t border-outline-variant pt-8">
+<div class="flex items-center gap-3 px-4 py-2 opacity-70">
+<span class="material-symbols-outlined text-sm" data-icon="settings">settings</span>
+<span class="font-label text-[10px] uppercase tracking-widest">Settings</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-2 opacity-70">
+<span class="material-symbols-outlined text-sm" data-icon="sim_card_download">sim_card_download</span>
+<span class="font-label text-[10px] uppercase tracking-widest">Export</span>
+</div>
+<div class="flex items-center gap-3 mt-4">
+<div class="w-8 h-8 rounded-full bg-outline-variant flex items-center justify-center text-[10px] font-label">AM</div>
+<div class="flex flex-col">
+<span class="text-xs font-bold">A. Miller</span>
+<span class="text-[9px] opacity-50 uppercase font-label">Curator</span>
+</div>
+</div>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="flex-1 lg:ml-72 bg-surface paper-grain min-h-screen">
+<article class="max-w-5xl mx-auto px-8 md:px-16 lg:px-24 py-24 relative">
+<!-- Metadata Header -->
+<div class="mb-20 flex flex-col md:flex-row md:items-end justify-between gap-8 border-b border-outline-variant pb-8">
+<div class="space-y-1">
+<div class="flex items-center gap-4 mb-4">
+<span class="font-label text-[10px] uppercase tracking-[0.2em] text-secondary">Vol. XIV • No. 2</span>
+<span class="w-1 h-1 bg-outline-variant rounded-full"></span>
+<span class="font-label text-[10px] uppercase tracking-[0.2em] text-secondary">October 1974</span>
+</div>
+<h1 class="text-5xl md:text-7xl font-serif font-light leading-[1.1] tracking-tight text-on-surface">The Semiotics of Archival Silence</h1>
+<p class="text-xl italic font-serif text-secondary mt-4">by Julianne H. Vance &amp; Elias Thorne-Smith</p>
+</div>
+<div class="flex flex-col items-start md:items-end gap-2 shrink-0">
+<div class="flex items-center gap-2">
+<span class="font-label text-[10px] uppercase tracking-widest opacity-60">DOI</span>
+<span class="font-label text-[10px] tracking-tighter">10.1145/2024.MAR.001</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-label text-[10px] uppercase tracking-widest opacity-60">Citations</span>
+<span class="font-label text-[10px] tracking-tighter">1,402</span>
+</div>
+</div>
+</div>
+<!-- Content Grid: Margin Annotations Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-12 lg:gap-24 items-start">
+<!-- The Margin (Left Column) -->
+<aside class="order-2 lg:order-1 space-y-24 pt-8">
+<!-- Margin Note 1 -->
+<div class="relative group">
+<div class="absolute -left-4 top-0 w-px h-full bg-primary/20"></div>
+<p class="handwritten text-primary text-sm leading-relaxed pl-4">
+                                "The gap is not an absence, but a presence of a different order. Note Vance's earlier work on 'The Unspoken Frame' (1969)."
+                            </p>
+<div class="mt-2 pl-4 flex items-center gap-2">
+<span class="w-8 h-[0.5px] bg-primary"></span>
+<span class="font-label text-[9px] uppercase tracking-widest text-primary/60 italic">Hand-inked 12.04</span>
+</div>
+</div>
+<!-- Margin Note 2 -->
+<div class="relative group mt-32">
+<div class="absolute -left-4 top-0 w-px h-full bg-secondary/20"></div>
+<p class="handwritten text-secondary text-sm leading-relaxed pl-4">
+                                Are we confusing 'erasure' with 'non-collection'? Thorne-Smith seems to suggest intentionality where there might only be neglect.
+                            </p>
+<div class="mt-2 pl-4 flex items-center gap-2">
+<span class="w-8 h-[0.5px] bg-secondary"></span>
+<span class="font-label text-[9px] uppercase tracking-widest text-secondary/60 italic">Reviewer #3</span>
+</div>
+</div>
+<!-- Connection Threads -->
+<div class="pt-12">
+<h4 class="font-label text-[10px] uppercase tracking-widest text-on-surface mb-6 opacity-40">Connected Records</h4>
+<div class="space-y-4">
+<div class="flex items-start gap-4">
+<span class="material-symbols-outlined text-xs text-primary mt-1" data-icon="link">link</span>
+<div>
+<p class="text-xs font-serif italic border-b border-outline-variant border-dashed pb-1 cursor-pointer hover:text-primary transition-colors">Dust and the Archive: A Study in Deterioration</p>
+<p class="font-label text-[9px] opacity-50 mt-1 uppercase">Folio 82</p>
+</div>
+</div>
+<div class="flex items-start gap-4">
+<span class="material-symbols-outlined text-xs text-primary mt-1" data-icon="link">link</span>
+<div>
+<p class="text-xs font-serif italic border-b border-outline-variant border-dashed pb-1 cursor-pointer hover:text-primary transition-colors">Photographic Negative #904 - Undisclosed Location</p>
+<p class="font-label text-[9px] opacity-50 mt-1 uppercase">Visual Box 14</p>
+</div>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Text (Right Column) -->
+<div class="order-1 lg:order-2 space-y-12">
+<!-- Abstract/Pull Quote -->
+<blockquote class="text-2xl md:text-3xl font-serif italic text-on-surface leading-snug border-l-0 pl-0 relative">
+<span class="absolute -left-8 -top-4 text-7xl font-serif text-outline-variant opacity-30 select-none">“</span>
+                            What is omitted from the official record often speaks with greater volume than that which is meticulously preserved. This paper explores the topological structure of these 'voids' in 20th-century institutional archives.
+                        </blockquote>
+<!-- Body Paragraph 1 -->
+<div class="prose prose-lg text-on-surface/90 leading-[1.8] space-y-8 font-serif text-lg">
+<p>
+                                In the traditional view of the archive, the document is the primary unit of meaning. However, we contend that the <span class="highlight-amber px-1">interstitial space between documents</span>—the archival silence—functions as a deliberate semiotic marker. These silences are not accidental. They are the result of a complex interplay of power, cultural priority, and the inherent limitations of physical storage.
+                            </p>
+<p>
+                                Consider the collection of the Royal Cartographic Society between 1880 and 1910. While the maps of territorial expansion are exhaustive, the <span class="highlight-amber px-1">logbooks of local guides</span> are conspicuously absent. This absence creates a specific narrative of discovery that bypasses collaborative reality.
+                            </p>
+<div class="my-16 py-8 px-10 bg-surface-container-low border-0 relative">
+<div class="absolute left-0 top-0 w-1 h-full bg-primary/30"></div>
+<h5 class="font-label text-[10px] uppercase tracking-[0.3em] mb-4 text-secondary">Figure 1.0: Decay Gradient</h5>
+<div class="w-full h-64 bg-surface-container overflow-hidden group">
+<img alt="Archival paper decay" class="w-full h-full object-cover grayscale opacity-80 mix-blend-multiply transition-transform duration-700 group-hover:scale-105" data-alt="Close-up high-contrast monochrome photograph of weathered, foxing edges of old manuscripts stacked with dramatic low-key lighting showing texture and fiber" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB2Df7L8CxSK7XkTVVepIwDfRx05H-_DlyfRy3j0eDRjf-3ZsXY_bhNmdOeV72sVPvrJB5hqhk5WrnIPAeV9pzxW3uw8AgDLvVBrO1CcUc-Ni8w7mcjFVmwrJret-35ma67hWuhR0PVUH6si8c2lQNT1JFfqQWXLFkR6vMzn4lLhUBz2xIae0BZlfPho80JbOoAPlw-_xhgY9fFFqopd8sr_UiSpNUr8LB9VE5Du3P6cKgENMe8Meu7_C82CriinUxw0uCx85bHNHg"/>
+</div>
+<p class="text-[11px] font-label leading-relaxed mt-4 opacity-60">Structural representation of material loss vs. information density over a 50-year interval.</p>
+</div>
+<p>
+                                To map silence is to acknowledge the phantom limb of history. We use the term "Spectral Citations" to describe the way missing evidence exerts influence on existing conclusions. When an investigator notices a jump in folio numbers, they are experiencing the presence of a ghost.
+                            </p>
+<p>
+                                Our research identifies three distinct categories of archival void:
+                            </p>
+<ul class="space-y-4 list-none pl-4 border-l border-outline-variant">
+<li class="flex gap-4">
+<span class="font-label text-xs opacity-40">01.</span>
+<span><strong class="text-on-surface">Systemic Attrition:</strong> The gradual loss of data through physical degradation or technological obsolescence.</span>
+</li>
+<li class="flex gap-4">
+<span class="font-label text-xs opacity-40">02.</span>
+<span><strong class="text-on-surface">Curatorial Selection:</strong> The intentional discarding of records deemed "non-essential" by administrative gatekeepers.</span>
+</li>
+<li class="flex gap-4">
+<span class="font-label text-xs opacity-40">03.</span>
+<span><strong class="text-on-surface">Redactionary Violence:</strong> The active destruction of records to obscure liability or historical culpability.</span>
+</li>
+</ul>
+</div>
+<!-- Footer Actions -->
+<div class="pt-16 flex flex-wrap gap-4 border-t border-outline-variant">
+<button class="border border-outline px-6 py-3 text-xs font-label uppercase tracking-widest hover:bg-on-surface hover:text-surface transition-all flex items-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="download">download</span>
+                                Download Monograph
+                            </button>
+<button class="border border-outline px-6 py-3 text-xs font-label uppercase tracking-widest hover:bg-on-surface hover:text-surface transition-all flex items-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="share">share</span>
+                                Cite Record
+                            </button>
+<button class="border border-outline px-6 py-3 text-xs font-label uppercase tracking-widest hover:bg-on-surface hover:text-surface transition-all flex items-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="bookmark">bookmark</span>
+                                Add to Shelf
+                            </button>
+</div>
+</div>
+</div>
+<!-- Floating Bottom Interaction (Mobile Only) -->
+<div class="md:hidden fixed bottom-6 left-6 right-6 bg-surface-container-high p-4 flex justify-between items-center z-50 border border-outline-variant shadow-lg">
+<span class="font-serif italic">Archive Index</span>
+<div class="flex gap-4">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+<span class="material-symbols-outlined" data-icon="search">search</span>
+</div>
+</div>
+</article>
+</main>
+</div>
+<!-- Background Ink Illustration Decor (Subtle) -->
+<div class="fixed top-0 right-0 w-1/3 h-screen pointer-events-none z-0 opacity-[0.03]">
+<svg class="w-full h-full" viewbox="0 0 400 800" xmlns="http://www.w3.org/2000/svg">
+<path d="M50 100 Q 150 50, 200 200 T 350 400" fill="transparent" stroke="#1d1c17" stroke-width="0.5"></path>
+<path d="M20 150 Q 120 100, 180 250 T 320 450" fill="transparent" stroke="#1d1c17" stroke-width="0.5"></path>
+<path d="M380 50 Q 280 150, 300 300 T 100 700" fill="transparent" stroke="#1d1c17" stroke-width="0.5"></path>
+</svg>
+</div>
+</body></html>

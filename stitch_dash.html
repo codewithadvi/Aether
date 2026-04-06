@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Margin — Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;family=Inter:wght@300;400;700&amp;family=JetBrains+Mono:wght@300;400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "secondary-fixed": "#dee5cf",
+                        "on-primary": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "tertiary": "#4a4540",
+                        "primary-fixed-dim": "#ffb4a2",
+                        "primary-fixed": "#ffdad2",
+                        "on-secondary-container": "#5e6553",
+                        "surface-bright": "#fef9f1",
+                        "error": "#ba1a1a",
+                        "background": "#fef9f1",
+                        "outline-variant": "#d9c1bc",
+                        "secondary-container": "#dce2cc",
+                        "on-secondary-fixed": "#171d10",
+                        "on-tertiary-container": "#ded5ce",
+                        "surface": "#fef9f1",
+                        "outline": "#86736e",
+                        "tertiary-fixed": "#eae1da",
+                        "surface-container-high": "#ece8e0",
+                        "surface-variant": "#e7e2da",
+                        "on-primary-container": "#ffcbbe",
+                        "on-error-container": "#93000a",
+                        "on-tertiary-fixed": "#1f1b17",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed-variant": "#723425",
+                        "tertiary-fixed-dim": "#cec5be",
+                        "on-surface-variant": "#53433f",
+                        "primary-container": "#8e4a39",
+                        "inverse-primary": "#ffb4a2",
+                        "inverse-surface": "#32302b",
+                        "on-secondary-fixed-variant": "#424939",
+                        "surface-container-low": "#f8f3eb",
+                        "surface-container": "#f2ede5",
+                        "surface-tint": "#904b3a",
+                        "surface-container-highest": "#e7e2da",
+                        "on-tertiary-fixed-variant": "#4b4641",
+                        "tertiary-container": "#625c57",
+                        "inverse-on-surface": "#f5f0e8",
+                        "secondary-fixed-dim": "#c2c9b4",
+                        "primary": "#713324",
+                        "surface-dim": "#ded9d2",
+                        "on-primary-fixed": "#3a0a02",
+                        "on-surface": "#1d1c17",
+                        "on-error": "#ffffff",
+                        "secondary": "#5a614f",
+                        "surface-container-lowest": "#ffffff",
+                        "on-background": "#1d1c17"
+                    },
+                    fontFamily: {
+                        "headline": ["Newsreader", "serif"],
+                        "body": ["Newsreader", "serif"],
+                        "label": ["Inter", "monospace"],
+                        "mono": ["JetBrains Mono", "monospace"]
+                    },
+                    borderRadius: { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 200, 'GRAD' 0, 'opsz' 24;
+            font-size: 20px;
+        }
+        .ink-chart-bar {
+            background-color: #1d1c17;
+            opacity: 0.15;
+            transition: opacity 0.4s ease;
+        }
+        .ink-chart-bar:hover {
+            opacity: 0.8;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f8f3eb;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #d9c1bc;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body selection:bg-primary-container selection:text-white">
+<!-- TopAppBar -->
+<header class="bg-[#fef9f1] dark:bg-[#1d1c17] flex justify-between items-center w-full px-12 py-8 max-w-[1600px] mx-auto">
+<div class="flex items-center gap-12">
+<h1 class="text-3xl font-serif italic text-[#1d1c17] dark:text-[#fef9f1]">Margin</h1>
+<nav class="hidden md:flex gap-8 items-center">
+<a class="text-[#713324] dark:text-[#d9c1bc] font-bold underline decoration-0.5pt hover:text-[#713324] transition-colors duration-400 font-label text-xs uppercase tracking-widest" href="#">Collection</a>
+<a class="text-[#1d1c17] dark:text-[#ece8e0] opacity-70 hover:text-[#713324] transition-colors duration-400 font-label text-xs uppercase tracking-widest" href="#">Marginalia</a>
+<a class="text-[#1d1c17] dark:text-[#ece8e0] opacity-70 hover:text-[#713324] transition-colors duration-400 font-label text-xs uppercase tracking-widest" href="#">The Archive</a>
+</nav>
+</div>
+<div class="flex items-center gap-6">
+<span class="font-label text-[10px] uppercase tracking-widest text-outline">AM</span>
+<button class="material-symbols-outlined text-[#713324] dark:text-[#d9c1bc]">light_mode</button>
+<button class="bg-primary text-on-primary px-4 py-2 rounded-sm text-xs font-label uppercase tracking-widest hover:bg-on-primary-fixed-variant transition-colors">New Entry</button>
+</div>
+</header>
+<div class="flex max-w-[1600px] mx-auto min-h-screen">
+<!-- SideNavBar -->
+<aside class="hidden lg:flex fixed left-0 top-0 h-screen flex-col py-10 px-6 bg-[#f8f3eb] dark:bg-[#2a2924] w-72">
+<div class="mb-12">
+<p class="font-serif text-xl text-[#1d1c17] dark:text-[#fef9f1] mb-1">The Margin</p>
+<p class="font-label text-[10px] uppercase tracking-tighter text-secondary">Archival Records</p>
+</div>
+<nav class="flex-1 flex flex-col gap-6">
+<a class="text-[#713324] dark:text-[#d9c1bc] border-l-2 border-[#713324] pl-4 italic font-serif text-lg" href="#">Collection</a>
+<a class="text-[#5a614f] dark:text-[#86736e] pl-4 font-label text-xs uppercase tracking-widest hover:bg-[#ece8e0] transition-all duration-400 py-1" href="#">Marginalia</a>
+<a class="text-[#5a614f] dark:text-[#86736e] pl-4 font-label text-xs uppercase tracking-widest hover:bg-[#ece8e0] transition-all duration-400 py-1" href="#">The Archive</a>
+<a class="text-[#5a614f] dark:text-[#86736e] pl-4 font-label text-xs uppercase tracking-widest hover:bg-[#ece8e0] transition-all duration-400 py-1" href="#">The Reading Shelf</a>
+</nav>
+<div class="mt-auto border-t border-outline-variant pt-8 flex flex-col gap-4">
+<button class="flex items-center gap-3 text-secondary hover:text-primary transition-colors">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label text-[10px] uppercase tracking-widest">Settings</span>
+</button>
+<button class="flex items-center gap-3 text-secondary hover:text-primary transition-colors">
+<span class="material-symbols-outlined">sim_card_download</span>
+<span class="font-label text-[10px] uppercase tracking-widest">Export</span>
+</button>
+<div class="mt-6 flex items-center gap-3">
+<div class="w-8 h-8 rounded-sm bg-surface-container-high flex items-center justify-center font-serif italic text-primary text-sm">AM</div>
+<div class="flex flex-col">
+<span class="font-serif text-sm">Arthur M.</span>
+<span class="font-label text-[9px] uppercase text-outline">Librarian</span>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Canvas -->
+<main class="flex-1 lg:ml-72 px-12 py-10">
+<div class="max-w-5xl mx-auto space-y-20">
+<!-- Hero Header -->
+<section class="flex flex-col md:flex-row justify-between items-end gap-8 border-b border-outline-variant pb-12">
+<div class="space-y-4 max-w-xl">
+<span class="font-label text-xs uppercase tracking-[0.2em] text-secondary">Vol. XIV / Issue 12</span>
+<h2 class="text-6xl font-headline font-light tracking-tight text-on-surface leading-tight">
+                            Your collection is <span class="italic">a blank page</span>.
+                        </h2>
+<p class="text-xl text-on-surface-variant font-serif max-w-md italic opacity-80">
+                            "The margin is the place for the most intense activity of the mind."
+                        </p>
+</div>
+<!-- Streak Widget -->
+<div class="bg-surface-container-low p-8 rounded-sm flex flex-col items-center gap-4 w-full md:w-48 text-center border-l border-primary">
+<span class="material-symbols-outlined text-primary text-4xl" style="font-variation-settings: 'FILL' 1;">light</span>
+<div class="space-y-1">
+<p class="text-4xl font-serif italic">12</p>
+<p class="font-label text-[10px] uppercase tracking-widest text-outline">Day Streak</p>
+</div>
+<p class="text-[11px] font-serif text-secondary italic">Keep it lit.</p>
+</div>
+</section>
+<!-- Dashboard Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-16">
+<!-- Main Content Column -->
+<div class="lg:col-span-8 space-y-20">
+<!-- Weekly Stats -->
+<section>
+<div class="flex justify-between items-baseline mb-10">
+<h3 class="font-serif text-2xl">Quiet Observations</h3>
+<span class="font-label text-[10px] uppercase tracking-widest text-outline">Oct 14 — Oct 21</span>
+</div>
+<div class="flex items-end justify-between h-48 gap-4 px-4 border-b border-outline-variant/30 pb-2">
+<div class="flex flex-col items-center flex-1 gap-4 group">
+<div class="w-full ink-chart-bar h-[40%]" title="4 papers"></div>
+<span class="font-mono text-[9px] text-outline group-hover:text-primary transition-colors">MON</span>
+</div>
+<div class="flex flex-col items-center flex-1 gap-4 group">
+<div class="w-full ink-chart-bar h-[65%]" title="7 papers"></div>
+<span class="font-mono text-[9px] text-outline group-hover:text-primary transition-colors">TUE</span>
+</div>
+<div class="flex flex-col items-center flex-1 gap-4 group">
+<div class="w-full ink-chart-bar h-[30%]" title="3 papers"></div>
+<span class="font-mono text-[9px] text-outline group-hover:text-primary transition-colors">WED</span>
+</div>
+<div class="flex flex-col items-center flex-1 gap-4 group">
+<div class="w-full ink-chart-bar h-[85%]" title="9 papers"></div>
+<span class="font-mono text-[9px] text-outline group-hover:text-primary transition-colors">THU</span>
+</div>
+<div class="flex flex-col items-center flex-1 gap-4 group">
+<div class="w-full ink-chart-bar h-[55%]" title="6 papers"></div>
+<span class="font-mono text-[9px] text-outline group-hover:text-primary transition-colors">FRI</span>
+</div>
+<div class="flex flex-col items-center flex-1 gap-4 group">
+<div class="w-full ink-chart-bar h-[100%]" title="12 papers"></div>
+<span class="font-mono text-[9px] text-outline group-hover:text-primary transition-colors">SAT</span>
+</div>
+<div class="flex flex-col items-center flex-1 gap-4 group">
+<div class="w-full ink-chart-bar h-[45%]" title="5 papers"></div>
+<span class="font-mono text-[9px] text-outline group-hover:text-primary transition-colors">SUN</span>
+</div>
+</div>
+</section>
+<!-- Recent Papers - Newspaper Column Layout -->
+<section>
+<h3 class="font-serif text-2xl mb-10">Recent Inquisitions</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-16">
+<!-- Paper 1 -->
+<article class="space-y-4 border-t border-outline-variant/50 pt-6 group">
+<div class="flex justify-between items-start">
+<span class="font-mono text-[10px] text-primary">DOI: 10.1038/s41586</span>
+<span class="font-label text-[9px] uppercase text-outline">Oct 20, 2023</span>
+</div>
+<h4 class="text-2xl font-headline leading-snug group-hover:italic transition-all">The Architecture of Silence in Post-War Literature</h4>
+<p class="text-sm text-on-surface-variant font-serif leading-relaxed line-clamp-3 italic opacity-75">
+                                        An exploration of how negative space in narrative structures mirrors the socio-economic voids of the 1950s urban landscape...
+                                    </p>
+<div class="pt-4 flex gap-2">
+<span class="px-2 py-0.5 border border-outline-variant text-[9px] font-label uppercase tracking-widest text-secondary">Aesthetics</span>
+<span class="px-2 py-0.5 border border-outline-variant text-[9px] font-label uppercase tracking-widest text-secondary">Lit Theory</span>
+</div>
+</article>
+<!-- Paper 2 -->
+<article class="space-y-4 border-t border-outline-variant/50 pt-6 group">
+<div class="flex justify-between items-start">
+<span class="font-mono text-[10px] text-primary">DOI: 10.1145/3313831</span>
+<span class="font-label text-[9px] uppercase text-outline">Oct 19, 2023</span>
+</div>
+<h4 class="text-2xl font-headline leading-snug group-hover:italic transition-all">Algorithmic Erasure: The Ethics of Digital Decay</h4>
+<p class="text-sm text-on-surface-variant font-serif leading-relaxed line-clamp-3 italic opacity-75">
+                                        Questioning the permanence of the digital archive and the intentionality behind the disappearance of online metadata over time...
+                                    </p>
+<div class="pt-4 flex gap-2">
+<span class="px-2 py-0.5 border border-outline-variant text-[9px] font-label uppercase tracking-widest text-secondary">Ethics</span>
+<span class="px-2 py-0.5 border border-outline-variant text-[9px] font-label uppercase tracking-widest text-secondary">Digital</span>
+</div>
+</article>
+<!-- Paper 3 -->
+<article class="space-y-4 border-t border-outline-variant/50 pt-6 group">
+<div class="flex justify-between items-start">
+<span class="font-mono text-[10px] text-primary">DOI: 10.1086/703138</span>
+<span class="font-label text-[9px] uppercase text-outline">Oct 18, 2023</span>
+</div>
+<h4 class="text-2xl font-headline leading-snug group-hover:italic transition-all">Symmetry in Chaos: Patterns of Ancient Epigraphy</h4>
+<p class="text-sm text-on-surface-variant font-serif leading-relaxed line-clamp-3 italic opacity-75">
+                                        Tracing the visual rhythm of stone inscriptions in late-antiquity and the subconscious human drive for geometric order...
+                                    </p>
+<div class="pt-4 flex gap-2">
+<span class="px-2 py-0.5 border border-outline-variant text-[9px] font-label uppercase tracking-widest text-secondary">Archaeology</span>
+<span class="px-2 py-0.5 border border-outline-variant text-[9px] font-label uppercase tracking-widest text-secondary">Visual Arts</span>
+</div>
+</article>
+<!-- Empty State / Call to Action -->
+<div class="border-t border-outline-variant/50 pt-6 flex flex-col justify-center items-center text-center p-8 bg-surface-container-low/50">
+<p class="font-serif italic text-outline mb-4">"The next insight is waiting for its ink."</p>
+<button class="border border-primary text-primary px-6 py-2 rounded-sm text-xs font-label uppercase tracking-widest hover:bg-primary hover:text-white transition-all">
+                                        Make it interesting
+                                    </button>
+</div>
+</div>
+</section>
+</div>
+<!-- Recommendation Sidebar -->
+<aside class="lg:col-span-4 space-y-12">
+<div class="sticky top-12 bg-surface-container-low p-8 border-l border-outline-variant space-y-8">
+<div>
+<h3 class="font-serif text-xl mb-2">Curator's Note</h3>
+<p class="font-label text-[10px] uppercase tracking-widest text-outline border-b border-outline-variant/30 pb-4 mb-4">Recommended for the Margin</p>
+</div>
+<div class="space-y-6">
+<div class="group cursor-pointer">
+<p class="font-mono text-[10px] text-primary mb-2">Recommended Suggestion</p>
+<h4 class="font-headline text-lg leading-tight mb-3">Phenomenology of the Book: Tactility in the Age of Screens</h4>
+<p class="text-xs text-on-surface-variant font-serif leading-relaxed opacity-80">
+                                        A vital piece for your current inquiry into digital archives. It explores why we still crave the "scent" of information.
+                                    </p>
+<div class="mt-4 flex items-center text-primary gap-2">
+<span class="font-label text-[9px] uppercase tracking-widest font-bold">Add to Shelf</span>
+<span class="material-symbols-outlined text-sm">arrow_forward</span>
+</div>
+</div>
+<div class="bg-surface p-4 rounded-sm border border-outline-variant/20 shadow-sm">
+<p class="font-serif italic text-sm text-secondary mb-3">Your Archive is 84% consistent. Consider cross-referencing your notes on 'Linguistic Relativity'.</p>
+<div class="h-1 bg-outline-variant w-full rounded-full">
+<div class="h-full bg-primary w-[84%]"></div>
+</div>
+</div>
+</div>
+<div class="pt-8 space-y-4">
+<p class="font-label text-[9px] uppercase tracking-widest text-outline">In the Margins</p>
+<ul class="space-y-3 font-serif text-sm">
+<li class="flex items-center gap-2 text-on-surface-variant">
+<span class="w-1 h-1 rounded-full bg-primary"></span>
+<span>Revisit: The Library of Babel</span>
+</li>
+<li class="flex items-center gap-2 text-on-surface-variant">
+<span class="w-1 h-1 rounded-full bg-primary"></span>
+<span>Check citations in 'Digital Ephemera'</span>
+</li>
+</ul>
+</div>
+<img alt="Antique books on shelf" class="w-full grayscale opacity-40 mix-blend-multiply mt-8 rounded-sm" data-alt="Close-up of weathered antique leather book spines on a dark wooden shelf in a dim, atmospheric library setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBMg00ntQAys_MymjYW5iG6vxUeU3CMGNJySH9AIt8Vvx26EFT72W-xu3P1PRWnCF41tepG9TYo7XmZOWaZV0jzdqGDgJ3OFs_JHJ8GtgRvWp6mJtnzFm2HmdmM85Af0KvLbSU6NJiWtS6ywvkefBk18S8PcFEl6xoNjRLUtRSAUr68cS5YO8TpuRth7Jlt2wgoqJUcZhBkiYs5idpvQRfRkRIohhLTEIN_1c9OUqgiag2GXdfOc9g-WtEbTsiYMQVDNAh4R9fn8Fs"/>
+</div>
+</aside>
+</div>
+</div>
+<!-- Footer Branding -->
+<footer class="mt-32 border-t border-outline-variant pt-12 pb-24 text-center">
+<p class="font-serif italic text-outline text-lg mb-2">Margin</p>
+<p class="font-label text-[10px] uppercase tracking-[0.4em] text-secondary">A Digital Sanctuary for the Intellectual mind</p>
+<div class="mt-8 flex justify-center gap-8 font-mono text-[9px] text-outline">
+<span>V 4.2.1-ARCHIVAL</span>
+<span>EST. MMXXIII</span>
+<span>PRIVACY OF THOUGHT</span>
+</div>
+</footer>
+</main>
+</div>
+</body></html>

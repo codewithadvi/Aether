@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;family=Inter:wght@300;400;600&amp;family=Inter+Tight:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "secondary-fixed": "#dee5cf",
+            "on-primary": "#ffffff",
+            "on-secondary": "#ffffff",
+            "error-container": "#ffdad6",
+            "tertiary": "#4a4540",
+            "primary-fixed-dim": "#ffb4a2",
+            "primary-fixed": "#ffdad2",
+            "on-secondary-container": "#5e6553",
+            "surface-bright": "#fef9f1",
+            "error": "#ba1a1a",
+            "background": "#fef9f1",
+            "outline-variant": "#d9c1bc",
+            "secondary-container": "#dce2cc",
+            "on-secondary-fixed": "#171d10",
+            "on-tertiary-container": "#ded5ce",
+            "surface": "#fef9f1",
+            "outline": "#86736e",
+            "tertiary-fixed": "#eae1da",
+            "surface-container-high": "#ece8e0",
+            "surface-variant": "#e7e2da",
+            "on-primary-container": "#ffcbbe",
+            "on-error-container": "#93000a",
+            "on-tertiary-fixed": "#1f1b17",
+            "on-tertiary": "#ffffff",
+            "on-primary-fixed-variant": "#723425",
+            "tertiary-fixed-dim": "#cec5be",
+            "on-surface-variant": "#53433f",
+            "primary-container": "#8e4a39",
+            "inverse-primary": "#ffb4a2",
+            "inverse-surface": "#32302b",
+            "on-secondary-fixed-variant": "#424939",
+            "surface-container-low": "#f8f3eb",
+            "surface-container": "#f2ede5",
+            "surface-tint": "#904b3a",
+            "surface-container-highest": "#e7e2da",
+            "on-tertiary-fixed-variant": "#4b4641",
+            "tertiary-container": "#625c57",
+            "inverse-on-surface": "#f5f0e8",
+            "secondary-fixed-dim": "#c2c9b4",
+            "primary": "#713324",
+            "surface-dim": "#ded9d2",
+            "on-primary-fixed": "#3a0a02",
+            "on-surface": "#1d1c17",
+            "on-error": "#ffffff",
+            "secondary": "#5a614f",
+            "surface-container-lowest": "#ffffff",
+            "on-background": "#1d1c17"
+          },
+          fontFamily: {
+            "headline": ["Newsreader", "serif"],
+            "body": ["Newsreader", "serif"],
+            "label": ["Inter", "monospace"]
+          },
+          borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+        },
+      },
+    }
+  </script>
+<style>.material-symbols-outlined {
+    font-variation-settings: "FILL" 0, "wght" 300, "GRAD" 0, "opsz" 24
+    }
+.spine-text {
+    writing-mode: vertical-rl;
+    text-orientation: mixed
+    }
+.paper-texture {
+    background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuAT81MQB7QAE3COuEGbahvtUgQ4_7rEeB7YBQVSmGNxnbycVeHtxvxFqLxrDguGiAFS36Y4WpS5RHXeU5CadZ81DVmVr0V7e3FKaiNExrN6mltzrYJBSopIZLJAr-WMs-05gIgiklrqxGVp6pzUGUD8gJldduxlZmA8_r5RLRSyhCHLlHTMIGfvgccqB2ff8nO1f4gbbBUldDqTIc6YQUsjboBlTNNNsuqPLJk7TsEwrzXAt2W7eLBVIVhYuM5lunYvUbO0M5HhOqs)
+    }</style>
+</head>
+<body class="bg-background text-on-background font-body selection:bg-primary-fixed selection:text-on-primary-fixed-variant">
+<!-- Side Navigation Bar -->
+<nav class="fixed left-0 top-0 h-screen flex flex-col py-10 px-6 bg-[#f8f3eb] dark:bg-[#2a2924] text-[#713324] dark:text-[#d9c1bc] docked full-height left-0 w-72 border-r-0 z-50">
+<div class="mb-12">
+<h1 class="text-xl font-serif text-[#1d1c17] dark:text-[#fef9f1]">The Margin</h1>
+<p class="font-label text-[10px] uppercase tracking-widest opacity-60 mt-1">Archival Records</p>
+</div>
+<div class="flex-1 space-y-6">
+<!-- Active Item: Collection -->
+<a class="flex items-center text-[#713324] dark:text-[#d9c1bc] border-l-2 border-[#713324] pl-4 italic group transition-all duration-400" href="#">
+<span class="font-label text-xs uppercase tracking-widest">Collection</span>
+</a>
+<a class="flex items-center text-[#5a614f] dark:text-[#86736e] pl-4 hover:bg-[#ece8e0] dark:hover:bg-[#35342f] transition-all duration-400" href="#">
+<span class="font-label text-xs uppercase tracking-widest">Marginalia</span>
+</a>
+<a class="flex items-center text-[#5a614f] dark:text-[#86736e] pl-4 hover:bg-[#ece8e0] dark:hover:bg-[#35342f] transition-all duration-400" href="#">
+<span class="font-label text-xs uppercase tracking-widest">The Archive</span>
+</a>
+<a class="flex items-center text-[#5a614f] dark:text-[#86736e] pl-4 hover:bg-[#ece8e0] dark:hover:bg-[#35342f] transition-all duration-400" href="#">
+<span class="font-label text-xs uppercase tracking-widest">The Reading Shelf</span>
+</a>
+</div>
+<div class="mt-auto space-y-4 pt-8 border-t border-outline-variant/20">
+<button class="w-full bg-primary text-on-primary py-3 rounded-sm font-label text-[10px] uppercase tracking-[0.2em] transition-all duration-400 hover:opacity-90">
+        New Entry
+      </button>
+<div class="flex flex-col space-y-3 mt-6">
+<a class="flex items-center text-[#5a614f] pl-4 text-xs font-label uppercase tracking-widest hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined mr-3 text-lg" data-icon="settings">settings</span>
+          Settings
+        </a>
+<a class="flex items-center text-[#5a614f] pl-4 text-xs font-label uppercase tracking-widest hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined mr-3 text-lg" data-icon="sim_card_download">sim_card_download</span>
+          Export
+        </a>
+</div>
+</div>
+</nav>
+<!-- Main Canvas -->
+<main class="ml-72 min-h-screen bg-background p-12 lg:p-20 max-w-[1600px]">
+<!-- Top Bar -->
+<header class="flex justify-between items-baseline mb-24">
+<div>
+<h2 class="text-6xl font-headline italic tracking-tight text-on-surface">Collection</h2>
+<div class="flex items-center mt-4 gap-4">
+<span class="font-label text-[10px] uppercase tracking-widest text-secondary">Vol. IV (2024)</span>
+<div class="h-px w-12 bg-outline-variant/30"></div>
+<span class="font-label text-[10px] uppercase tracking-widest text-secondary">12 active volumes</span>
+</div>
+</div>
+<div class="flex items-center gap-8 font-label text-[10px] uppercase tracking-[0.2em] text-outline">
+<span class="material-symbols-outlined text-sm" data-icon="light_mode">light_mode</span>
+<span class="cursor-pointer hover:text-primary transition-colors">Sort by Chronology</span>
+<span class="text-on-surface font-bold">AM</span>
+</div>
+</header>
+<!-- Library Shelf Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-12 gap-y-24 items-end">
+<!-- Journal 1: Vertical Spine (The Scholarly) -->
+<div class="group flex flex-col">
+<div class="relative h-[480px] w-full bg-surface-container-low paper-texture border-l-4 border-primary transition-all duration-500 group-hover:-translate-y-2 group-hover:shadow-xl group-hover:shadow-on-surface/5 flex">
+<div class="w-12 h-full flex items-center justify-center border-r border-outline-variant/20">
+<span class="spine-text font-headline text-lg italic text-on-surface/40 select-none">MCMXCVIII</span>
+</div>
+<div class="flex-1 p-8 flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-start mb-12">
+<div class="border border-secondary/30 rounded-full px-3 py-1 flex items-center">
+<span class="font-label text-[9px] uppercase tracking-tighter text-secondary">In Progress</span>
+</div>
+<span class="font-label text-[10px] text-outline">01</span>
+</div>
+<h3 class="text-3xl font-headline leading-tight">Philosophy of the Mundane</h3>
+<p class="font-label text-[10px] text-secondary mt-4 uppercase tracking-widest italic leading-relaxed">Observations on the everyday rituals of city dwellers.</p>
+</div>
+<div class="mt-auto">
+<div class="flex items-end justify-between">
+<div class="font-label text-[10px] text-outline leading-tight">
+<p>Entries: 42</p>
+<p>Last Update: 12 Oct</p>
+</div>
+<span class="material-symbols-outlined text-primary/40 text-3xl" data-icon="book_2">book_2</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Journal 2: Horizontal Cover (The Modernist) -->
+<div class="group flex flex-col lg:translate-y-12">
+<div class="relative h-[400px] w-full bg-tertiary-fixed paper-texture border-b-8 border-tertiary/10 transition-all duration-500 group-hover:-translate-y-2 group-hover:shadow-xl group-hover:shadow-on-surface/5">
+<div class="p-10 h-full flex flex-col">
+<div class="mb-auto">
+<span class="font-label text-[10px] text-tertiary/60 uppercase tracking-widest">Metadata / Arch. 004</span>
+<h3 class="text-4xl font-headline mt-6 tracking-tight text-on-tertiary-fixed">Brutalist Structures</h3>
+</div>
+<div class="mt-auto">
+<div class="h-[120px] w-full overflow-hidden mb-6">
+<img alt="Architecture detail" class="w-full h-full object-cover grayscale opacity-80 mix-blend-multiply" data-alt="close-up of raw concrete building texture with sharp shadows and geometric brutalist patterns in monochrome" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDcAecff9Ebq6Pu1inaoY5ONveAqTBoVhYfX2QqEiBn79D8pg856WMNb_uTQRSTu6nK-cWW1-u7bVP4hibM5kmIMsz6u-tBIjIePNud-fyaQ8LpAmr8VoWhB7gmX51t8I38PFV3LBWXpPobzd_Edpl9jNTJH7uSjFcQKTIG27-t1crW2EtPhON3Jh_3f5_0-qyPSZNm2eDAzxfAE0Iv1BCdpAG7ua5aDhT3w8YKRTmjeNqcTZoyMpVMdmpU8MX0EQGcEktM-Edavss"/>
+</div>
+<div class="flex justify-between items-center border-t border-tertiary/10 pt-4">
+<span class="font-label text-[9px] uppercase text-tertiary">18 Plates</span>
+<span class="font-label text-[9px] uppercase text-tertiary">Completed 2023</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Journal 3: Narrow Spine (The Researcher) -->
+<div class="group flex flex-col">
+<div class="relative h-[520px] w-full bg-surface-container-high border-r-2 border-outline-variant/30 transition-all duration-500 group-hover:-translate-y-2 group-hover:shadow-xl group-hover:shadow-on-surface/5 flex flex-col">
+<div class="p-8 border-b border-outline-variant/30">
+<div class="w-8 h-8 rounded-full border-2 border-primary/20 flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-xs text-primary" data-icon="lock" style="font-variation-settings: 'FILL' 1;">lock</span>
+</div>
+<h3 class="text-2xl font-headline italic">Private Papers</h3>
+</div>
+<div class="flex-1 flex items-center justify-center p-12">
+<span class="spine-text font-label text-[11px] uppercase tracking-[0.4em] text-outline/50">Restricted Access — Confidential</span>
+</div>
+<div class="p-8 bg-surface-variant/40">
+<p class="font-label text-[9px] text-secondary leading-relaxed">System-sealed record of personal correspondences and ledger entries.</p>
+</div>
+</div>
+</div>
+<!-- Journal 4: Minimalist Slab (The Poet) -->
+<div class="group flex flex-col lg:-translate-y-8">
+<div class="relative h-[440px] w-full bg-surface-container-low border-t-4 border-secondary paper-texture transition-all duration-500 group-hover:-translate-y-2 group-hover:shadow-xl group-hover:shadow-on-surface/5">
+<div class="p-8 h-full flex flex-col">
+<div class="flex-1 border border-outline-variant/10 p-6 flex flex-col items-center text-center justify-center">
+<span class="material-symbols-outlined text-4xl text-outline/20 mb-8" data-icon="ink_pen">ink_pen</span>
+<h3 class="text-3xl font-headline mb-4">Lyrical Fragments</h3>
+<div class="w-8 h-px bg-primary/40 mb-4"></div>
+<p class="font-label text-[10px] text-secondary uppercase tracking-widest px-4 leading-relaxed">A collection of unfinished verses and loose thoughts.</p>
+</div>
+<div class="mt-8 flex justify-center">
+<div class="px-4 py-1.5 border border-primary/20 bg-primary-fixed/10">
+<span class="font-label text-[9px] uppercase tracking-widest text-primary italic">Editorial Seal</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Journal 5: Wide Format (The Archivist) -->
+<div class="group flex flex-col md:col-span-2">
+<div class="relative h-[360px] w-full bg-[#f2ede5] paper-texture flex overflow-hidden transition-all duration-500 group-hover:-translate-y-2 group-hover:shadow-xl group-hover:shadow-on-surface/5">
+<div class="w-1/3 h-full overflow-hidden">
+<img alt="Vintage map or paper" class="w-full h-full object-cover grayscale brightness-110 opacity-70 mix-blend-multiply" data-alt="aged yellowish paper texture with faded ink architectural drawings and elegant copperplate calligraphy" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBLL2LBdzRACV9LzIMNRUNz-aVjsy9T0YG2XirbUzf86DQyzAnDI2UDSyUIL6NuB2Z7xSCQkv3j-fQEPFWJ-KF9_uS3aELPrwcVQFHPsWxGf_5U7-fok94Xp4PDEUED-pkbcWmT-OoEVXlXALoyvU3R_uluh5eye3MUmh-pdIUnQHKQG1jyExv503L3mkByWrW3wz7dANVuS40SRp85IpMI-7bbV0x0gWNLQ6ltc3hHjvSNf6ptTJJCvgS8Hz2sF_btk8LUJIJZIsU"/>
+</div>
+<div class="w-2/3 p-12 flex flex-col justify-between">
+<div>
+<span class="font-label text-[10px] uppercase tracking-widest text-secondary">Collection Log: 012-B</span>
+<h3 class="text-5xl font-headline mt-4 tracking-tight">Anatomy of Silence</h3>
+<p class="mt-6 font-body text-lg text-on-surface/80 max-w-md leading-relaxed italic">A profound inquiry into the acoustic ecology of uninhabited spaces and rural landscapes.</p>
+</div>
+<div class="flex items-center gap-12 border-t border-outline-variant/30 pt-8 mt-8">
+<div class="flex flex-col">
+<span class="font-label text-[9px] text-outline uppercase tracking-widest">Type</span>
+<span class="font-label text-xs mt-1">Field Research</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label text-[9px] text-outline uppercase tracking-widest">Status</span>
+<span class="font-label text-xs mt-1">Active / Vol 2</span>
+</div>
+<div class="flex flex-col ml-auto">
+<button class="font-label text-[10px] uppercase tracking-widest text-primary font-bold hover:underline">Expand Record →</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Journal 6: Thin Slab (The Collector) -->
+<div class="group flex flex-col lg:translate-y-20">
+<div class="relative h-[480px] w-full bg-surface-container-highest paper-texture border-l border-outline transition-all duration-500 group-hover:-translate-y-2 group-hover:shadow-xl group-hover:shadow-on-surface/5">
+<div class="p-8 h-full flex flex-col items-center">
+<span class="font-label text-[9px] uppercase tracking-[0.3em] text-outline mb-12">Serial No. 8829</span>
+<div class="flex-1 flex items-center">
+<span class="spine-text font-headline text-4xl text-on-surface/90">The Winter Archive</span>
+</div>
+<div class="mt-auto text-center">
+<div class="mb-4">
+<span class="material-symbols-outlined text-primary text-2xl" data-icon="ac_unit">ac_unit</span>
+</div>
+<span class="font-label text-[10px] text-secondary uppercase tracking-widest">Dec 2023 - Mar 2024</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Journal 7: Canvas Slab (The Artist) -->
+<div class="group flex flex-col">
+<div class="relative h-[420px] w-full bg-[#fdfaf5] border border-outline-variant/40 transition-all duration-500 group-hover:-translate-y-2 group-hover:shadow-xl group-hover:shadow-on-surface/5">
+<div class="p-6 h-full flex flex-col">
+<div class="h-48 bg-surface-container w-full flex items-center justify-center mb-6 border border-outline-variant/10">
+<img alt="Book texture" class="w-full h-full object-cover opacity-60 mix-blend-multiply" data-alt="top down view of an open old book with yellowed pages and some handwritten ink notes in the margins" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCaAj3_4XW_6xWlwejQobS2RKFT0zCSGBU-sceji7Spij3Zyiy-WwlOwsDGGvSvefCPeeDo1gp8gIN2TEPhHTEsLTxMy6u-78H1O08lAP_Ay0KjdIEZ8B_eiNFe9rNk95sP_Mo5PWmmQ0VFRKcrllpJTxdX_vdut9nXQskyRRpm6EFsbFyAAZ54330ceJngrSI154h9lm3xiQxR8GgWGzpEP5VUgWH72Imqz4H6O2EDPTXJD9J0I9TPnzlsfsA-GSySAIOYkifwNTc"/>
+</div>
+<h3 class="text-2xl font-headline text-center">Collected Loose Leaves</h3>
+<div class="mt-auto flex justify-between border-t border-outline-variant/20 pt-4">
+<span class="font-label text-[9px] text-outline italic">Vol. 1</span>
+<span class="material-symbols-outlined text-sm text-outline" data-icon="more_horiz">more_horiz</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer Margin Info -->
+<footer class="mt-40 border-t border-outline-variant/30 pt-12 flex flex-col md:flex-row justify-between items-start text-outline">
+<div class="max-w-md">
+<p class="font-label text-[10px] uppercase tracking-widest leading-relaxed">The Archive is maintained using the Curated Margin protocol. Every entry is indexed by date, mood, and intellectual gravity.</p>
+</div>
+<div class="mt-8 md:mt-0 flex gap-12">
+<div class="flex flex-col">
+<span class="font-label text-[9px] uppercase tracking-widest mb-2 opacity-60">System Load</span>
+<span class="font-label text-xs">Nominal / 0.42ms</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label text-[9px] uppercase tracking-widest mb-2 opacity-60">Last Indexing</span>
+<span class="font-label text-xs">Today, 08:44</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label text-[9px] uppercase tracking-widest mb-2 opacity-60">Library Size</span>
+<span class="font-label text-xs">1.2 GB / Plain Text</span>
+</div>
+</div>
+</footer>
+</main>
+<!-- Navigation Suppression Logic & Content Integrity -->
+<!-- No Bottom Nav as per Shell Visibility Rules (this is a Desktop/Admin view) -->
+<!-- Side Nav handles top-level destinations -->
+</body></html>

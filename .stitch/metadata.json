@@ -1,0 +1,39 @@
+{
+  "name": "projects/15508683774056007370",
+  "projectId": "15508683774056007370",
+  "title": "Research Paper Tracker",
+  "visibility": "PRIVATE",
+  "projectType": "PROJECT_DESIGN",
+  "origin": "STITCH",
+  "deviceType": "DESKTOP",
+  "designSystemAssetId": "82186ea8d30148f1b1ce1bb3b9c0af8e",
+  "designTheme": {
+    "colorMode": "DARK",
+    "font": "INTER",
+    "roundness": "ROUND_EIGHT",
+    "customColor": "#6366f1",
+    "overridePrimaryColor": "#6366f1",
+    "overrideSecondaryColor": "#8b5cf6",
+    "overrideTertiaryColor": "#10b981",
+    "overrideNeutralColor": "#0f0f1a"
+  },
+  "screens": {
+    "dashboard": {
+      "id": "9e3faaa37a974b3283670a09a9ed8ebb",
+      "sourceScreen": "projects/15508683774056007370/screens/9e3faaa37a974b3283670a09a9ed8ebb",
+      "title": "Arxio Dashboard",
+      "width": 2560,
+      "height": 2614,
+      "localHtml": ".stitch/designs/dashboard.html",
+      "localPng": ".stitch/designs/dashboard.png"
+    },
+    "papers": {
+      "id": "04b63635b87244beb8602ba1486a2907",
+      "sourceScreen": "projects/15508683774056007370/screens/04b63635b87244beb8602ba1486a2907",
+      "title": "Arxio Papers Library",
+      "width": 2560,
+      "height": 2242,
+      "localPng": ".stitch/designs/papers.png"
+    }
+  }
+}
