@@ -1,6 +1,3 @@
-<p align="center">
-  <img src="public/banner.png" alt="Aether" width="100%" />
-</p>
 
 <h3 align="center"><em>Where knowledge finds its shape.</em></h3>
 
