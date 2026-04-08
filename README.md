@@ -1,155 +1,321 @@
-# Aether
+<p align="center">
+  <img src="public/banner.png" alt="Aether" width="100%" />
+</p>
 
-### *Where knowledge finds its shape.*
+<h3 align="center"><em>Where knowledge finds its shape.</em></h3>
 
-Aether is a research intelligence platform built for the modern scholar. It transforms the solitary, fragmented work of reading and cataloging papers into a structured, living knowledge graph — one that grows smarter with every paper you add. Unlike reference managers that simply store citations, or note-taking tools that leave insights siloed, Aether synthesizes across your entire archive: surfacing connections, detecting contradictions, scoring reproducibility, and scaffolding the next research proposal — automatically.
+<p align="center">
+  The research intelligence platform that turns your reading into a living knowledge graph.
+</p>
 
-Nothing like it exists in the market today.
+<p align="center">
+  <a href="#features"><strong>Features</strong></a> · <a href="#how-it-works"><strong>How It Works</strong></a> · <a href="#architecture"><strong>Architecture</strong></a> · <a href="#getting-started"><strong>Get Started</strong></a> · <a href="#roadmap"><strong>Roadmap</strong></a> · <a href="#contributing"><strong>Contributing</strong></a>
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/version-1.0.0-2a697b?style=flat-square" alt="Version" />
+  <img src="https://img.shields.io/badge/license-MIT-green?style=flat-square" alt="License" />
+  <img src="https://img.shields.io/badge/typescript-%3E%3D5.3-3178c6?style=flat-square&logo=typescript&logoColor=white" alt="TypeScript" />
+  <img src="https://img.shields.io/badge/react-19-61dafb?style=flat-square&logo=react&logoColor=white" alt="React" />
+  <img src="https://img.shields.io/badge/node-%3E%3D18-339933?style=flat-square&logo=node.js&logoColor=white" alt="Node" />
+  <img src="https://img.shields.io/badge/postgres-16%20+%20pgvector-4169E1?style=flat-square&logo=postgresql&logoColor=white" alt="PostgreSQL" />
+  <img src="https://img.shields.io/badge/PRs-welcome-brightgreen?style=flat-square" alt="PRs Welcome" />
+</p>
 
 ---
 
 ## The Problem
 
-Researchers spend an enormous fraction of their time on the infrastructure of knowledge — tracking what they've read, finding what they missed, re-discovering insights they once captured, and constructing literature reviews from scratch each time. Every tool available today solves only a fragment of this. Zotero stores. Notion organizes. Semantic Scholar surfaces. But none of them think.
+Researchers today juggle five or six disconnected tools just to keep up with the literature. Reference managers store citations but don't think about them. Note-taking apps capture insights but leave them stranded. Discovery engines surface papers but forget what you've already read. And when it's time to write a literature review, a research proposal, or simply answer "what have I missed?" — you're back to square one.
 
-Aether is the first system to integrate all of these workflows into a single, coherent intelligence layer on top of your personal reading history.
-
----
-
-## Core Philosophy
-
-Aether is built around three convictions:
-
-- **Context over cataloging.** A paper is not a reference — it is a node in a living network of ideas. Every entry you make strengthens that network.
-- **Intelligence should be automatic.** Connections between papers, field classification, reproducibility signals, novelty scores — these should be computed for you, not by you.
-- **Scholarship deserves beautiful tools.** The platform you spend hours inside should feel as considered as the work you do in it.
+**Aether closes this gap entirely.** It is the first open-source platform that unifies paper tracking, semantic search, citation mapping, insight capture, contradiction detection, reproducibility scoring, and research proposal generation into a single, intelligent workspace.
 
 ---
 
 ## Features
 
-### Paper Ingestion and Archive Management
+### Intelligent Paper Ingestion
+Add papers by DOI, URL, title, or PDF upload. Aether automatically resolves complete metadata — title, authors, abstract, venue, year, citation count — from Semantic Scholar and Crossref. Duplicate detection prevents redundant entries. Field classification happens automatically across 10+ research domains.
 
-Add papers by DOI, URL, title, or manual entry. Aether automatically resolves full metadata — title, authors, abstract, publication venue, year, citation count — via the Semantic Scholar and Crossref APIs, falling back gracefully when sources are unavailable. Duplicate detection operates at both the DOI level and the metadata level, ensuring your archive stays clean. Field classification happens automatically at ingestion using keyword-based domain detection across Machine Learning, Computer Vision, NLP, Biology, Physics, Economics, Medicine, Mathematics, Systems, and more.
+### Semantic Connection Discovery
+Every paper is embedded as a vector and stored using pgvector. When you open any paper, Aether computes cosine similarity across your entire archive and surfaces related work — ranked by confidence score. No external AI API required. No configuration. It just works.
 
-### Semantic Paper Connections
-
-Every paper you add is embedded using a TF-IDF vector with hash-based locality-sensitive bucketing, stored in PostgreSQL via `pgvector`. When you open any paper, Aether computes cosine similarity across your entire archive and surfaces the most semantically related work — ranked by a confidence score derived from real vector distances. This requires no external AI API, no model to run, and no configuration. It just works.
-
-### Citation Graph Tracking
-
-Aether integrates deeply with the Semantic Scholar citation graph. For each paper, it fetches up to 50 references (papers it cites) and up to 50 citations (papers that cite it), linking them bidirectionally in the database. When a cited paper exists in your own archive, the relationship is recorded as a first-class database join. You can browse both directions — forward citations and backward references — directly from any paper's detail view.
+### Citation Graph Mapping
+Aether fetches up to 50 forward citations and 50 backward references per paper from the Semantic Scholar graph. Both directions are linked in the database. When a cited paper exists in your archive, it becomes a first-class navigable relationship.
 
 ### Research Gap Tracker
-
-The Gap Tracker is a structured hypothesis board. Create gap cards from scratch or promote any captured insight directly into a research gap. Each card tracks a hypothesis, the dataset you'd need, a baseline to beat, expected risks, and a lifecycle status: `idea`, `validating`, `running`, or `done`.
-
-Run a **Novelty Check** against your own archive to score how novel the hypothesis is relative to what you've already read, receive a feasibility score, and get an overlap summary of potentially conflicting papers. Promote any gap card into a **Draft Paper** — a structured skeleton including abstract, motivation, related work, methodology, and expected results — generated from the card's content.
+A structured hypothesis board. Create gap cards from scratch or promote any insight into a research question. Track hypotheses, required datasets, baselines, and risks through a lifecycle: `idea` → `validating` → `running` → `done`. Run novelty checks against your archive. Generate structured paper drafts from any gap card.
 
 ### Contradiction Detection
+Pairwise analysis across an entire collection to find papers that disagree. Aether identifies shared conceptual terms, then detects opposing polarity signals. Results are ranked by confidence and surfaced as an automatically generated conflict map.
 
-For any collection, Aether performs pairwise analysis across all papers to detect semantic contradictions. It identifies shared conceptual terms between papers, then checks for opposing polarity signals — one paper claiming improvement where another claims failure. Results are ranked by a confidence score, giving you an automatically generated map of where the field disagrees with itself.
-
-### Method Benchmark Table
-
-For any collection, Aether extracts a structured comparison table across all papers: task, dataset, metrics, model family, compute budget, limitations, and failure modes — pulled from stored metadata and abstract signals. This is the literature review comparison table, generated without any manual data entry.
+### Method Benchmark Tables
+Auto-generated comparison tables for any collection — task, dataset, metrics, model family, compute budget, limitations, and failure modes — extracted from metadata and abstracts. The literature review table, without manual data entry.
 
 ### Proposal Generation
-
-From any collection, generate a structured research proposal draft in one click. Aether analyzes the collection to identify dominant fields, extract thematic keywords, and enumerate contributing venues, then constructs a coherent proposal with motivation, prior work summary, hypotheses, methodology sketch, and expected contributions.
+One-click structured research proposals from any collection. Aether analyzes thematic keywords, dominant fields, and contributing venues to generate a complete proposal with motivation, prior work, hypotheses, methodology, and expected contributions.
 
 ### Reproducibility Scoring
-
-Every paper is assigned a reproducibility card that scores it across four dimensions: code availability, dataset access, environment documentation, and model checkpoints. Signals are detected from titles, abstracts, and URLs. Each card includes a 0–100 reproducibility score and a list of missing artifacts, surfaced automatically from the paper's existing metadata.
-
-### In-Paper Annotations
-
-Capture quotes and annotations directly against any paper in your archive. Each annotation can carry a note, a page number, an anchor reference, and a type classification. Annotations are indexed and persisted per user, per paper.
-
-### Collections and Organization
-
-Group papers into named collections for projects, literature reviews, or reading queues. Papers can belong to multiple collections. Collections carry their own set of intelligence features — contradiction detection, benchmark tables, and proposal generation operate at the collection level.
-
-### Insights and Ideas
-
-Capture key insights from papers as first-class objects, tagged and timestamped. Promote insights into Gap Cards with one action. Separately, maintain a workspace of research ideas linked to their source papers, each carrying a status lifecycle from brainstorm to published.
-
-### Deep Search
-
-Search across your entire archive — titles, abstracts, authors, and fields — with filtering by field and author. Results are ranked and paginated, surfaced within sub-second response times on archives of thousands of papers.
+Every paper receives a reproducibility card scored across four dimensions: code availability, dataset access, environment documentation, and model checkpoints. Signals are extracted automatically from abstracts, titles, and URLs. Each card shows a 0–100 score and a list of missing artifacts.
 
 ### Academic Radar
+Personalized paper recommendations powered by Semantic Scholar, based on your most recently added papers. Trending discoveries appear on your dashboard and can be imported into your archive with a single click.
 
-The dashboard surfaces personalized paper recommendations from Semantic Scholar based on the external IDs of your most recently added papers. If no personalized signal is available, Aether falls back to trending queries in active research areas. Radar papers can be imported directly into your archive in a single click.
+### Collections, Notes, Insights, Ideas
+Organize papers into named collections. Capture rich-text notes and timestamped insights per paper. Maintain a workspace of research ideas linked to source papers — each with a lifecycle from brainstorm to published.
 
-### Reading Statistics and Gamification
+### Gamified Reading Statistics
+Track papers read, active reading streaks, fields explored, and weekly trends over rolling 12-week windows. Earn achievement badges at milestones. Stay motivated with visible progress.
 
-The dashboard tracks papers read, active reading streak, fields explored, and weekly reading trends over a rolling 12-week window. A progressive achievement system awards badges at milestones: first paper, 10, 50, and 100 papers; 5 and 10 distinct fields explored; and 10, 50, and 100 insights captured. Badges are displayed on the profile and notified on achievement.
+### Full Data Export
+Export your complete archive — papers, notes, insights, ideas, collections — in JSON or CSV. Export individual collections or your full dataset.
 
-### Data Export
+---
 
-Export your complete archive — papers, notes, insights, ideas, collections — in JSON format. Export individual collections or your full dataset. CSV export is available for papers and statistics.
+## How It Works
 
-### Authentication
+### User Workflow
 
-Secure JWT-based session authentication with 30-day token validity. OAuth2 login via GitHub and Google. Password requirements enforced on registration. Rate limiting on all API endpoints via Redis-backed counters.
+```mermaid
+flowchart LR
+    A["Add Paper\n(DOI / URL / Title / PDF)"] --> B["Auto-Resolve\nMetadata"]
+    B --> C["Archive\n& Classify"]
+    C --> D["Capture Notes\n& Insights"]
+    C --> E["View Connections\n& Citations"]
+    D --> F["Promote to\nGap Card"]
+    E --> G["Build\nCollections"]
+    F --> H["Novelty Check\n& Draft Paper"]
+    G --> I["Detect\nContradictions"]
+    G --> J["Generate\nBenchmark Table"]
+    G --> K["Generate\nProposal"]
+
+    style A fill:#2a697b,stroke:#1a4a5a,color:#fff
+    style B fill:#e3d7b8,stroke:#d9c1bc,color:#1d1c17
+    style C fill:#e3d7b8,stroke:#d9c1bc,color:#1d1c17
+    style D fill:#f8f3eb,stroke:#d9c1bc,color:#1d1c17
+    style E fill:#f8f3eb,stroke:#d9c1bc,color:#1d1c17
+    style F fill:#f8f3eb,stroke:#d9c1bc,color:#1d1c17
+    style G fill:#f8f3eb,stroke:#d9c1bc,color:#1d1c17
+    style H fill:#713324,stroke:#5a2a1d,color:#fff
+    style I fill:#713324,stroke:#5a2a1d,color:#fff
+    style J fill:#713324,stroke:#5a2a1d,color:#fff
+    style K fill:#713324,stroke:#5a2a1d,color:#fff
+```
+
+### Data Flow
+
+```mermaid
+flowchart TB
+    subgraph INGEST["Paper Ingestion"]
+        direction TB
+        INPUT["User Input\n(DOI / URL / Title)"]
+        SS["Semantic Scholar API"]
+        CR["Crossref API"]
+        INPUT --> SS
+        INPUT --> CR
+    end
+
+    subgraph STORE["Storage Layer"]
+        direction TB
+        PG[("PostgreSQL 16\n+ pgvector")]
+        RD[("Redis\nSessions & Rate Limits")]
+    end
+
+    subgraph INTELLIGENCE["Intelligence Engine"]
+        direction TB
+        VEC["TF-IDF Vectorization\n& Hashed Embeddings"]
+        SIM["Cosine Similarity\nConnection Discovery"]
+        CIT["Bidirectional\nCitation Graph"]
+        CLASS["Automatic\nField Classification"]
+        REPRO["Reproducibility\nSignal Detection"]
+        CONTRA["Contradiction\nAnalysis"]
+    end
+
+    subgraph OUTPUT["Research Outputs"]
+        direction TB
+        CONN["Paper Connections\n& Recommendations"]
+        GAP["Gap Cards\n& Novelty Scores"]
+        BENCH["Benchmark Tables"]
+        PROP["Proposal Drafts"]
+        DRAFT["Paper Drafts"]
+    end
+
+    INGEST --> STORE
+    STORE --> INTELLIGENCE
+    INTELLIGENCE --> OUTPUT
+
+    style INGEST fill:#2a697b,stroke:#1a4a5a,color:#fff
+    style STORE fill:#e3d7b8,stroke:#d9c1bc,color:#1d1c17
+    style INTELLIGENCE fill:#f8f3eb,stroke:#d9c1bc,color:#1d1c17
+    style OUTPUT fill:#713324,stroke:#5a2a1d,color:#fff
+```
 
 ---
 
 ## Architecture
 
-Aether is a full-stack TypeScript application with a decoupled frontend and backend.
+```mermaid
+graph TB
+    subgraph CLIENT["Frontend — React 19 + Vite"]
+        direction LR
+        UI["UI Layer\nRadix UI + Framer Motion"]
+        STATE["State\nZustand + TanStack Query"]
+        PAGES["Pages\nDashboard · Papers · Collections\nSearch · Insights · Ideas · Gaps"]
+    end
 
-**Frontend**
+    subgraph API["Backend — Express + TypeScript"]
+        direction LR
+        AUTH["Auth\nJWT + OAuth2\n(GitHub, Google)"]
+        ROUTES["REST API\nPapers · Collections · Search\nInsights · Ideas · Stats · Export"]
+        SERVICES["Services\nMetadata · Vector · Semantic Scholar"]
+        MIDDLEWARE["Middleware\nRate Limiting · Validation\nLogging"]
+    end
 
-- React 19 with Vite
-- Zustand for client state management
-- TanStack Query for server state, caching, and background synchronization
-- Framer Motion for micro-animations
-- Recharts for data visualization
-- Radix UI primitives for accessible components
-- React Hook Form with Zod schema validation
+    subgraph DATA["Data Layer"]
+        direction LR
+        POSTGRES[("PostgreSQL 16\npgvector extension\nPapers, Citations, Users\nCollections, Insights, Gaps")]
+        REDIS[("Redis 7\nSessions\nRate Limit Counters\nCache")]
+    end
 
-**Backend**
+    subgraph EXTERNAL["External Services"]
+        direction LR
+        S2["Semantic Scholar\nGraph API"]
+        CREF["Crossref\nMetadata API"]
+    end
 
-- Node.js with Express on TypeScript
-- PostgreSQL 16 with the `pgvector` extension for vector similarity search
-- Redis for session caching and API rate limiting
-- Bull for async job queuing
-- Passport.js for multi-strategy authentication (JWT, GitHub OAuth, Google OAuth)
-- Semantic Scholar and Crossref for external metadata resolution
-- `pdf-parse` for PDF metadata extraction
-- Winston for structured logging
+    CLIENT <-->|"REST / JSON"| API
+    API <--> DATA
+    API <-->|"Metadata & Citations"| EXTERNAL
 
-**Infrastructure**
+    style CLIENT fill:#2a697b,stroke:#1a4a5a,color:#fff
+    style API fill:#e3d7b8,stroke:#d9c1bc,color:#1d1c17
+    style DATA fill:#f8f3eb,stroke:#d9c1bc,color:#1d1c17
+    style EXTERNAL fill:#86736e,stroke:#6b5a55,color:#fff
+```
 
-- Docker Compose for PostgreSQL (with pgvector) and Redis
-- Database migrations via TypeScript migration scripts
+### Tech Stack
 
----
-
-## Design
-
-Aether's visual language is the **Archival Volume** design system — a parchment-and-ink aesthetic rooted in editorial typography, warm neutral tones (`#fef9f1`, `#e3d7b8`, `#d9c1bc`), and a deep academic teal (`#2a697b`) as its action color. Every surface feels like a considered document rather than a dashboard. Typography is set in a serif editorial voice with label text in uppercase tracking for hierarchy. Radial gradients and subtle border work create depth without noise.
-
----
-
-## Data Privacy
-
-All user data is private and scoped per authenticated account. No data is shared between users without explicit action. Papers, notes, insights, annotations, ideas, and gap cards are all user-keyed and inaccessible to other accounts. Session tokens are invalidated on logout.
-
----
-
-## API
-
-Aether exposes a REST API covering all core entities: papers, notes, insights, collections, ideas, gaps, annotations, search, export, and statistics. All endpoints require JWT authentication. Responses follow a consistent `{ success, data, pagination? }` envelope. Rate limiting is enforced per user via Redis.
-
----
-
-## Status
-
-Aether is actively developed and deployed as a hosted research productivity platform. The system is designed for individual researchers, small research groups, and teams conducting systematic literature reviews.
+| Layer | Technology |
+|-------|-----------|
+| Frontend | React 19, Vite, TypeScript, Zustand, TanStack Query, Framer Motion, Recharts, Radix UI |
+| Backend | Node.js, Express, TypeScript, Passport.js (JWT + OAuth2) |
+| Database | PostgreSQL 16 with pgvector, Redis 7 |
+| External APIs | Semantic Scholar, Crossref |
+| Infrastructure | Docker Compose |
 
 ---
 
-*Aether — Where knowledge finds its shape.*
+## Getting Started
+
+### Prerequisites
+
+- Node.js >= 18
+- Docker & Docker Compose
+- Git
+
+### Quick Start
+
+```bash
+# Clone the repository
+git clone https://github.com/codewithadvi/Aether.git
+cd Aether
+
+# Install dependencies
+npm run install:all
+
+# Start infrastructure (PostgreSQL + Redis)
+docker compose up -d
+
+# Run database migrations
+npm run migrate
+
+# Start the application
+npm run dev
+```
+
+The frontend will be available at `http://localhost:5173` and the API at `http://localhost:3001`.
+
+---
+
+## Project Structure
+
+```
+aether/
+├── src/                    # Frontend source
+│   ├── pages/              # Application pages
+│   │   ├── DashboardPage   # Reading stats, trends, academic radar
+│   │   ├── PapersPage      # Paper archive with search & filters
+│   │   ├── PaperDetailPage # Full paper view with citations, notes, insights
+│   │   ├── CollectionsPage # Collection management
+│   │   ├── SearchPage      # Deep search across archive
+│   │   ├── InsightsPage    # Insight browser
+│   │   ├── IdeasPage       # Research idea workspace
+│   │   ├── GapTrackerPage  # Hypothesis tracking board
+│   │   └── DatasetsPage    # Dataset analysis
+│   ├── components/         # Shared UI components
+│   ├── stores/             # Zustand state stores
+│   └── lib/                # API client & utilities
+├── backend/
+│   └── src/
+│       ├── routes/         # API route handlers
+│       ├── services/       # Metadata, vector, Semantic Scholar services
+│       ├── middleware/      # Auth, rate limiting, validation
+│       ├── models/         # Database models
+│       └── db/             # Migrations & connection pool
+├── docker-compose.yml      # PostgreSQL + Redis
+└── package.json
+```
+
+---
+
+## Roadmap
+
+- [x] Paper ingestion with auto-metadata resolution
+- [x] Semantic vector connections via pgvector
+- [x] Bidirectional citation graph from Semantic Scholar
+- [x] Research Gap Tracker with novelty scoring
+- [x] Contradiction detection across collections
+- [x] Auto-generated benchmark comparison tables
+- [x] One-click research proposal generation
+- [x] Reproducibility scoring engine
+- [x] Paper draft generation from gap cards
+- [x] Academic Radar with personalized recommendations
+- [x] Achievement system and gamified statistics
+- [x] OAuth2 authentication (GitHub, Google)
+- [x] Full data export (JSON, CSV)
+- [ ] Collaborative collections with shared annotations
+- [ ] PDF viewer with in-document highlights
+- [ ] Citation graph visualization (interactive node map)
+- [ ] Knowledge graph exploration mode
+- [ ] Zotero and Mendeley import
+- [ ] Browser extension for one-click paper capture
+- [ ] AI-powered research question generation
+- [ ] Weekly email digest of field activity
+
+---
+
+## Contributing
+
+Contributions are welcome and appreciated. Whether it's a bug fix, a feature request, or a documentation improvement — every contribution helps make Aether better for the research community.
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/your-feature`)
+3. Commit your changes (`git commit -m 'Add your feature'`)
+4. Push to the branch (`git push origin feature/your-feature`)
+5. Open a Pull Request
+
+Please read the [Code of Conduct](CODE_OF_CONDUCT.md) before contributing.
+
+---
+
+## License
+
+This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
+
+---
+
+<p align="center">
+  <strong>Aether</strong> — Where knowledge finds its shape.
+  <br />
+  <sub>Built for researchers, by researchers.</sub>
+</p>
