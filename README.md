@@ -2,7 +2,7 @@
 <h3 align="center"><em>Where knowledge finds its shape.</em></h3>
 
 <p align="center">
-  The research intelligence platform that turns your reading into a living knowledge graph.
+  From papers to proposals — a single platform for managing, analyzing, and advancing research.
 </p>
 
 <p align="center">
@@ -292,7 +292,7 @@ aether/
 ---
 
 <p align="center">
-  <strong>Aether</strong> — Where knowledge finds its shape.
+  <strong>Aether</strong>A research platform that goes beyond reading — mapping, analyzing, and generating new ideas from your papers.
   <br />
   <sub>Built for researchers, by researchers.</sub>
 </p>
