@@ -291,26 +291,6 @@ aether/
 
 ---
 
-## Contributing
-
-Contributions are welcome and appreciated. Whether it's a bug fix, a feature request, or a documentation improvement — every contribution helps make Aether better for the research community.
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/your-feature`)
-3. Commit your changes (`git commit -m 'Add your feature'`)
-4. Push to the branch (`git push origin feature/your-feature`)
-5. Open a Pull Request
-
-Please read the [Code of Conduct](CODE_OF_CONDUCT.md) before contributing.
-
----
-
-## License
-
-This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
-
----
-
 <p align="center">
   <strong>Aether</strong> — Where knowledge finds its shape.
   <br />
