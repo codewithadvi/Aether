@@ -1,4 +1,23 @@
-# Logs
+design.md
+tasks.md
+requirements.md
+*stitch*
+# Node dependencies
+node_modules/
+# Build outputs
+dist/
+build/
+# Local environment files
+.env
+.env.*
+# Log files
+*.log
+# OS/system files
+.DS_Store
+Thumbs.db
+# IDE/editor settings
+.vscode/
+.idea/# Logs
 logs
 *.log
 npm-debug.log*
