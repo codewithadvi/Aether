@@ -155,9 +155,15 @@ router.get('/shared/:token', async (req: Request, res: Response) => {
     const role = collection.owned_by_me ? 'owner' : (collection.collaborator_role || 'viewer');
     const papers = await query(
       `
-        SELECT p.*
+        SELECT
+          p.*,
+          cp.added_at,
+          cp.added_by,
+          u.name AS added_by_name,
+          u.email AS added_by_email
         FROM papers p
         JOIN collection_papers cp ON cp.paper_id = p.id
+        LEFT JOIN users u ON u.id = cp.added_by
         WHERE cp.collection_id = $1
         ORDER BY cp.added_at DESC
       `,
@@ -189,8 +195,17 @@ router.get('/:id', async (req: Request, res: Response) => {
     }
 
     const papers = await query(`
-      SELECT p.* FROM papers p JOIN collection_papers cp ON cp.paper_id = p.id
-      WHERE cp.collection_id = $1 ORDER BY cp.added_at DESC
+      SELECT
+        p.*,
+        cp.added_at,
+        cp.added_by,
+        u.name AS added_by_name,
+        u.email AS added_by_email
+      FROM papers p
+      JOIN collection_papers cp ON cp.paper_id = p.id
+      LEFT JOIN users u ON u.id = cp.added_by
+      WHERE cp.collection_id = $1
+      ORDER BY cp.added_at DESC
     `, [req.params.id]);
     res.json({
       success: true,
@@ -237,7 +252,10 @@ router.post('/:id/papers', async (req: Request, res: Response) => {
     if (!access || !access.can_edit) {
       return res.status(403).json({ success: false, error: { code: 'FORBIDDEN', message: 'No edit access to this collection' } });
     }
-    await query('INSERT INTO collection_papers (collection_id, paper_id) VALUES ($1, $2) ON CONFLICT DO NOTHING', [req.params.id, paper_id]);
+    await query(
+      'INSERT INTO collection_papers (collection_id, paper_id, added_by) VALUES ($1, $2, $3) ON CONFLICT DO NOTHING',
+      [req.params.id, paper_id, user.id]
+    );
     res.json({ success: true, data: { message: 'Paper added to collection' } });
   } catch (err: any) { res.status(500).json({ success: false, error: { code: 'INTERNAL_ERROR', message: err.message } }); }
 });

@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import api from '../lib/api';
 import { Sparkles } from 'lucide-react';
 import { format } from 'date-fns';
+import toast from 'react-hot-toast';
 
 const CAT_LABELS: Record<string, string> = {
   general: 'General', novel_methodology: 'Novel Methodology', surprising_result: 'Surprising!',
@@ -13,12 +14,41 @@ const CAT_LABELS: Record<string, string> = {
 
 export default function InsightsPage() {
   const navigate = useNavigate();
+  const qc = useQueryClient();
   const [catFilter, setCatFilter] = useState('');
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editingContent, setEditingContent] = useState('');
+  const [editingCategory, setEditingCategory] = useState('general');
 
   const { data, isLoading } = useQuery({
     queryKey: ['insights-all', catFilter],
     queryFn: () => api.get('/insights/all', { params: { category: catFilter || undefined } }).then(r => r.data.data),
   });
+
+  const updateInsight = useMutation({
+    mutationFn: (payload: { id: string; content: string; category: string }) =>
+      api.put(`/insights/${payload.id}`, { content: payload.content, category: payload.category }),
+    onSuccess: () => {
+      toast.success('Insight updated');
+      setEditingId(null);
+      setEditingContent('');
+      setEditingCategory('general');
+      qc.invalidateQueries({ queryKey: ['insights-all'] });
+    },
+    onError: () => toast.error('Failed to update insight'),
+  });
+
+  const startEditing = (ins: any) => {
+    setEditingId(ins.id);
+    setEditingContent(ins.content || '');
+    setEditingCategory(ins.category || 'general');
+  };
+
+  const cancelEditing = () => {
+    setEditingId(null);
+    setEditingContent('');
+    setEditingCategory('general');
+  };
 
   return (
     <div className="bg-transparent min-h-screen pb-20 duration-500">
@@ -77,7 +107,7 @@ export default function InsightsPage() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {data.map((ins: any) => (
-              <div key={ins.id} className="bg-[#f8f3eb] border border-[#d9c1bc]/60 rounded-xl p-8 shadow-sm hover:shadow-xl hover:border-[#2a697b]/50 transition-all cursor-pointer flex flex-col group relative overflow-hidden duration-500" onClick={() => navigate(`/papers/${ins.paper_id}`)}>
+              <div key={ins.id} className="bg-[#f8f3eb] border border-[#d9c1bc]/60 rounded-xl p-8 shadow-sm hover:shadow-xl hover:border-[#2a697b]/50 transition-all flex flex-col group relative overflow-hidden duration-500">
                  <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-[#e3d7b8]/40 via-transparent to-transparent z-0 opacity-0 group-hover:opacity-100 transition-opacity"></div>
                  <div className="absolute top-0 left-0 w-full h-1 bg-[#2a697b] opacity-0 group-hover:opacity-100 transition-opacity"></div>
                  
@@ -88,13 +118,63 @@ export default function InsightsPage() {
                     <span className="font-label text-[9px] uppercase tracking-widest text-[#86736e]">{format(new Date(ins.created_at), 'MMM d, yyyy')}</span>
                  </div>
                  
-                 <p className="font-serif text-[#1d1c17] text-lg leading-relaxed mb-8 flex-1 italic relative z-10">
-                    "{ins.content}"
-                 </p>
+                 {editingId === ins.id ? (
+                   <div className="mb-8 flex-1 relative z-10 space-y-4">
+                     <textarea
+                       className="w-full bg-[#fef9f1] border border-[#d9c1bc]/60 rounded-sm p-4 font-serif text-base text-[#1d1c17] min-h-[140px] outline-none focus:border-[#2a697b]"
+                       value={editingContent}
+                       onChange={(e) => setEditingContent(e.target.value)}
+                     />
+                     <select
+                       className="w-full bg-[#fef9f1] border border-[#d9c1bc]/60 rounded-sm p-3 text-[10px] font-label uppercase tracking-widest text-[#1d1c17] outline-none focus:border-[#2a697b]"
+                       value={editingCategory}
+                       onChange={(e) => setEditingCategory(e.target.value)}
+                     >
+                       {Object.keys(CAT_LABELS).map((c) => (
+                         <option key={c} value={c}>{CAT_LABELS[c]}</option>
+                       ))}
+                     </select>
+                     <div className="flex gap-2">
+                       <button
+                         className="px-4 py-2 bg-[#713324] text-white rounded-sm text-[10px] font-label uppercase tracking-widest disabled:opacity-40"
+                         disabled={!editingContent.trim() || updateInsight.isPending}
+                         onClick={() => updateInsight.mutate({ id: ins.id, content: editingContent.trim(), category: editingCategory })}
+                       >
+                         {updateInsight.isPending ? 'Saving...' : 'Save'}
+                       </button>
+                       <button
+                         className="px-4 py-2 border border-[#d9c1bc]/70 text-[#86736e] rounded-sm text-[10px] font-label uppercase tracking-widest"
+                         onClick={cancelEditing}
+                       >
+                         Cancel
+                       </button>
+                     </div>
+                   </div>
+                 ) : (
+                   <p className="font-serif text-[#1d1c17] text-lg leading-relaxed mb-8 flex-1 italic relative z-10">
+                      "{ins.content}"
+                   </p>
+                 )}
                  
                  <div className="border-t border-[#d9c1bc]/40 pt-6 mt-auto relative z-10">
                     <p className="font-label text-[8px] uppercase tracking-[0.5em] text-[#86736e] mb-2">Source Manuscript</p>
                     <p className="font-headline font-light text-sm text-[#2a697b] truncate group-hover:text-[#1d1c17] transition-colors">{ins.paper_title}</p>
+                    <div className="mt-4 flex gap-2">
+                      {editingId === ins.id ? null : (
+                        <button
+                          className="px-4 py-2 border border-[#d9c1bc]/70 text-[#86736e] hover:text-[#1d1c17] rounded-sm text-[10px] font-label uppercase tracking-widest"
+                          onClick={() => startEditing(ins)}
+                        >
+                          Edit
+                        </button>
+                      )}
+                      <button
+                        className="px-4 py-2 border border-[#2a697b]/40 text-[#2a697b] hover:bg-[#2a697b]/10 rounded-sm text-[10px] font-label uppercase tracking-widest"
+                        onClick={() => navigate(`/papers/${ins.paper_id}`)}
+                      >
+                        Open Paper
+                      </button>
+                    </div>
                  </div>
               </div>
             ))}

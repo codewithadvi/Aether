@@ -105,8 +105,13 @@ export default function PaperDetailPage() {
 
   const [activeTab, setActiveTab] = useState<'overview'|'notes'|'annotations'|'insights'|'connections'|'citations'|'snowball'|'recommended'|'methodology'>('overview');
   const [noteText, setNoteText] = useState('');
+  const [editingNoteId, setEditingNoteId] = useState<string | null>(null);
+  const [editingNoteText, setEditingNoteText] = useState('');
   const [insightText, setInsightText] = useState('');
   const [insightCat, setInsightCat] = useState('general');
+  const [editingInsightId, setEditingInsightId] = useState<string | null>(null);
+  const [editingInsightText, setEditingInsightText] = useState('');
+  const [editingInsightCat, setEditingInsightCat] = useState('general');
   const [editMethodology, setEditMethodology] = useState(false);
   const [methodologyForm, setMethodologyForm] = useState<any>(null);
   const [annotationQuote, setAnnotationQuote] = useState('');
@@ -202,6 +207,17 @@ export default function PaperDetailPage() {
     onSuccess: () => { toast.success('Note deleted'); qc.invalidateQueries({ queryKey: ['paper', id] }); },
   });
 
+  const updateNote = useMutation({
+    mutationFn: (payload: { id: string; content: string }) => api.put(`/notes/${payload.id}`, { content: payload.content }),
+    onSuccess: () => {
+      toast.success('Note updated');
+      setEditingNoteId(null);
+      setEditingNoteText('');
+      qc.invalidateQueries({ queryKey: ['paper', id] });
+    },
+    onError: () => toast.error('Failed to update note'),
+  });
+
   const addInsight = useMutation({
     mutationFn: () => api.post(`/insights/papers/${id}/insights`, { content: insightText, category: insightCat }),
     onSuccess: () => { toast.success('Insight captured! ✨'); setInsightText(''); qc.invalidateQueries({ queryKey: ['paper', id] }); },
@@ -211,6 +227,19 @@ export default function PaperDetailPage() {
   const deleteInsight = useMutation({
     mutationFn: (insId: string) => api.delete(`/insights/${insId}`),
     onSuccess: () => { toast.success('Insight deleted'); qc.invalidateQueries({ queryKey: ['paper', id] }); },
+  });
+
+  const updateInsight = useMutation({
+    mutationFn: (payload: { id: string; content: string; category: string }) =>
+      api.put(`/insights/${payload.id}`, { content: payload.content, category: payload.category }),
+    onSuccess: () => {
+      toast.success('Insight updated');
+      setEditingInsightId(null);
+      setEditingInsightText('');
+      setEditingInsightCat('general');
+      qc.invalidateQueries({ queryKey: ['paper', id] });
+    },
+    onError: () => toast.error('Failed to update insight'),
   });
 
   const addAnnotation = useMutation({
@@ -456,16 +485,52 @@ export default function PaperDetailPage() {
                             {notes.map((note: any) => (
                               <div key={note.id} className="relative group bg-[#fef9f1] border border-[#d9c1bc]/60 p-6 rounded-sm transition-all hover:-translate-y-1 hover:shadow-sm">
                                 <div className="absolute left-0 top-0 bottom-0 w-1 bg-[#2a697b] opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                                <p className="font-serif text-[#1d1c17] text-base leading-[1.8] whitespace-pre-wrap">
-                                  {note.content}
-                                </p>
+                                {editingNoteId === note.id ? (
+                                  <div className="space-y-3">
+                                    <textarea
+                                      className="w-full bg-[#f8f3eb] border border-[#d9c1bc]/60 rounded-sm p-4 text-base font-serif text-[#1d1c17] min-h-[120px] outline-none focus:border-[#2a697b]"
+                                      value={editingNoteText}
+                                      onChange={(e) => setEditingNoteText(e.target.value)}
+                                    />
+                                    <div className="flex gap-2">
+                                      <button
+                                        className="px-4 py-2 bg-[#713324] text-white rounded-sm text-[10px] font-label uppercase tracking-widest disabled:opacity-40"
+                                        disabled={!editingNoteText.trim() || updateNote.isPending}
+                                        onClick={() => updateNote.mutate({ id: note.id, content: editingNoteText.trim() })}
+                                      >
+                                        {updateNote.isPending ? 'Saving...' : 'Save'}
+                                      </button>
+                                      <button
+                                        className="px-4 py-2 border border-[#d9c1bc]/70 text-[#86736e] rounded-sm text-[10px] font-label uppercase tracking-widest"
+                                        onClick={() => { setEditingNoteId(null); setEditingNoteText(''); }}
+                                      >
+                                        Cancel
+                                      </button>
+                                    </div>
+                                  </div>
+                                ) : (
+                                  <p className="font-serif text-[#1d1c17] text-base leading-[1.8] whitespace-pre-wrap">
+                                    {note.content}
+                                  </p>
+                                )}
                                 <div className="mt-4 flex items-center justify-between pt-4 opacity-50 group-hover:opacity-100 transition-opacity">
                                   <span className="font-label text-[9px] uppercase tracking-[0.2em] text-[#86736e] font-bold">
                                     Recorded on {format(new Date(note.created_at), 'MMMM d, yyyy')}
                                   </span>
-                                  <button onClick={() => deleteNote.mutate(note.id)} className="text-[#86736e] transition-colors hover:text-[#713324]">
-                                    <span className="material-symbols-outlined text-[16px]">close</span>
-                                  </button>
+                                  <div className="flex items-center gap-2">
+                                    <button
+                                      onClick={() => {
+                                        setEditingNoteId(note.id);
+                                        setEditingNoteText(note.content || '');
+                                      }}
+                                      className="text-[#86736e] transition-colors hover:text-[#2a697b]"
+                                    >
+                                      <span className="material-symbols-outlined text-[16px]">edit</span>
+                                    </button>
+                                    <button onClick={() => deleteNote.mutate(note.id)} className="text-[#86736e] transition-colors hover:text-[#713324]">
+                                      <span className="material-symbols-outlined text-[16px]">close</span>
+                                    </button>
+                                  </div>
                                 </div>
                               </div>
                             ))}
@@ -504,10 +569,63 @@ export default function PaperDetailPage() {
                           {insights.map((ins: any) => (
                             <div key={ins.id} className="relative group p-8 bg-[#f8f3eb] border border-[#d9c1bc]/60 rounded-sm hover:shadow-sm transition-all hover:-translate-y-1">
                               <div className="flex justify-between items-start mb-6">
-                                <span className="px-3 py-1 bg-[#fef9f1] border border-[#d9c1bc]/60 text-[9px] font-label uppercase tracking-[0.2em] text-[#2a697b] font-bold rounded-sm shadow-sm opacity-80">{CAT_LABELS[ins.category]}</span>
-                                <button onClick={() => deleteInsight.mutate(ins.id)} className="opacity-50 group-hover:opacity-100 text-[#86736e] hover:text-[#713324] transition-colors"><span className="material-symbols-outlined text-[16px]">close</span></button>
+                                {editingInsightId === ins.id ? (
+                                  <select
+                                    className="px-3 py-2 bg-[#fef9f1] border border-[#d9c1bc]/60 text-[9px] font-label uppercase tracking-[0.2em] text-[#2a697b] font-bold rounded-sm shadow-sm"
+                                    value={editingInsightCat}
+                                    onChange={(e) => setEditingInsightCat(e.target.value)}
+                                  >
+                                    {CATEGORIES.map((c) => (
+                                      <option key={c} value={c}>{CAT_LABELS[c]}</option>
+                                    ))}
+                                  </select>
+                                ) : (
+                                  <span className="px-3 py-1 bg-[#fef9f1] border border-[#d9c1bc]/60 text-[9px] font-label uppercase tracking-[0.2em] text-[#2a697b] font-bold rounded-sm shadow-sm opacity-80">{CAT_LABELS[ins.category]}</span>
+                                )}
+                                <div className="flex items-center gap-2">
+                                  <button
+                                    onClick={() => {
+                                      setEditingInsightId(ins.id);
+                                      setEditingInsightText(ins.content || '');
+                                      setEditingInsightCat(ins.category || 'general');
+                                    }}
+                                    className="opacity-50 group-hover:opacity-100 text-[#86736e] hover:text-[#2a697b] transition-colors"
+                                  >
+                                    <span className="material-symbols-outlined text-[16px]">edit</span>
+                                  </button>
+                                  <button onClick={() => deleteInsight.mutate(ins.id)} className="opacity-50 group-hover:opacity-100 text-[#86736e] hover:text-[#713324] transition-colors"><span className="material-symbols-outlined text-[16px]">close</span></button>
+                                </div>
                               </div>
-                              <p className="font-serif text-[#1d1c17] text-lg leading-[1.7] whitespace-pre-wrap">{ins.content}</p>
+                              {editingInsightId === ins.id ? (
+                                <div className="space-y-3">
+                                  <textarea
+                                    className="w-full bg-[#fef9f1] border border-[#d9c1bc]/60 rounded-sm p-4 font-serif text-base text-[#1d1c17] min-h-[120px] outline-none focus:border-[#2a697b]"
+                                    value={editingInsightText}
+                                    onChange={(e) => setEditingInsightText(e.target.value)}
+                                  />
+                                  <div className="flex gap-2">
+                                    <button
+                                      className="px-4 py-2 bg-[#713324] text-white rounded-sm text-[10px] font-label uppercase tracking-widest disabled:opacity-40"
+                                      disabled={!editingInsightText.trim() || updateInsight.isPending}
+                                      onClick={() => updateInsight.mutate({ id: ins.id, content: editingInsightText.trim(), category: editingInsightCat })}
+                                    >
+                                      {updateInsight.isPending ? 'Saving...' : 'Save'}
+                                    </button>
+                                    <button
+                                      className="px-4 py-2 border border-[#d9c1bc]/70 text-[#86736e] rounded-sm text-[10px] font-label uppercase tracking-widest"
+                                      onClick={() => {
+                                        setEditingInsightId(null);
+                                        setEditingInsightText('');
+                                        setEditingInsightCat('general');
+                                      }}
+                                    >
+                                      Cancel
+                                    </button>
+                                  </div>
+                                </div>
+                              ) : (
+                                <p className="font-serif text-[#1d1c17] text-lg leading-[1.7] whitespace-pre-wrap">{ins.content}</p>
+                              )}
                             </div>
                           ))}
                         </div>

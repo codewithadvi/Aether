@@ -148,7 +148,11 @@ CREATE TABLE IF NOT EXISTS collection_papers (
   PRIMARY KEY (collection_id, paper_id)
 );
 
+ALTER TABLE collection_papers
+  ADD COLUMN IF NOT EXISTS added_by UUID REFERENCES users(id) ON DELETE SET NULL;
+
 CREATE INDEX IF NOT EXISTS idx_collection_papers_paper_id ON collection_papers(paper_id);
+CREATE INDEX IF NOT EXISTS idx_collection_papers_added_by ON collection_papers(added_by);
 
 -- Connections (similarity between papers)
 CREATE TABLE IF NOT EXISTS connections (

@@ -71,10 +71,12 @@ export default function CollectionsPage() {
   const qc = useQueryClient();
   const [showCreate, setShowCreate] = useState(false);
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, error } = useQuery({
     queryKey: ['collections'],
     queryFn: () => api.get('/collections').then(r => r.data.data),
   });
+
+  const collections = Array.isArray(data) ? data.filter((c: any) => c && typeof c === 'object') : [];
 
   const deleteMutation = useMutation({
     mutationFn: (id: string) => api.delete(`/collections/${id}`),
@@ -88,6 +90,12 @@ export default function CollectionsPage() {
     <div className="min-h-screen bg-transparent p-0 max-w-full fade-in relative">
       {showCreate && <CreateCollectionModal onClose={() => setShowCreate(false)} />}
 
+      {error && (
+        <div className="max-w-3xl mx-auto mt-8 px-12 py-4 rounded-sm border border-red-200 bg-red-50 text-red-900 text-sm font-serif">
+          Collections failed to load. Refresh the page if this persists.
+        </div>
+      )}
+
       <header className="relative pt-24 pb-28 px-12 lg:px-24 overflow-hidden border-b border-[#d9c1bc]/30 transition-all duration-700 mb-20 shadow-lg text-white">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-[#e3d7b8] via-[#2a697b] to-[#092c45] z-0"></div>
         <div className="absolute inset-0 opacity-[0.08] bg-[url('https://www.transparenttextures.com/patterns/cream-paper.png')] z-0 mix-blend-overlay"></div>
@@ -100,7 +108,7 @@ export default function CollectionsPage() {
             </div>
             <h1 className="text-5xl lg:text-7xl font-headline font-light tracking-tight text-white mb-2 drop-shadow-sm">Archival Volumes</h1>
             <div className="flex items-center mt-4 gap-4 opacity-70">
-              <span className="font-label text-[10px] uppercase tracking-widest text-[#e3d7b8]/85">{data?.length || 0} Synced Sectors</span>
+              <span className="font-label text-[10px] uppercase tracking-widest text-[#e3d7b8]/85">{collections.length} Synced Sectors</span>
             </div>
           </div>
           <button 
@@ -120,7 +128,7 @@ export default function CollectionsPage() {
          <div className="flex items-center justify-center mt-20">
             <div className="w-10 h-10 border-[3px] border-[#d9c1bc] border-t-[#713324] rounded-full animate-spin" />
          </div>
-      ) : !data?.length ? (
+      ) : collections.length === 0 ? (
         <div className="flex flex-col items-center text-center p-32 mt-12 bg-[#f8f3eb] rounded-sm border border-[#d9c1bc]/40 shadow-sm max-w-4xl mx-auto">
            <h2 className="text-4xl font-headline font-light text-[#1d1c17] mb-6">The archive is vacant.</h2>
            <p className="font-label text-[10px] uppercase tracking-[0.4em] text-[#86736e] max-w-md leading-relaxed mb-12">Bind your first volume to begin synthesizing the neural graph.</p>
@@ -133,11 +141,11 @@ export default function CollectionsPage() {
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-12 gap-y-16">
-          {data.map((c: any, index: number) => (
+          {collections.map((c: any) => (
              <div 
-               key={c.id} 
+               key={String(c.id || c.collection_id || c.name)} 
                className="group/card flex flex-col cursor-pointer relative aspect-[1/1.6] w-full bg-[#092c45] shadow-[0_30px_60px_-15px_rgba(0,0,0,0.5)] transition-all duration-700 hover:-translate-y-2 rounded-none overflow-hidden"
-               onClick={() => navigate(`/collections/${c.id}`)}
+               onClick={() => c?.id && navigate(`/collections/${c.id}`)}
              >
                {/* Fixed Spine Shadow Line */}
                <div className="absolute left-0 top-0 bottom-0 w-[4px] bg-black/30 z-20"></div>
@@ -168,7 +176,7 @@ export default function CollectionsPage() {
                     
                     <div className="flex justify-between items-center w-full leading-none opacity-20">
                        <span className="font-label text-[9px] text-white tracking-[0.3em] font-medium uppercase font-mono">Dec 2026</span>
-                       <span className="font-label text-[9px] text-white tracking-[0.3em] font-medium uppercase font-mono">ID-{c.id.substring(0,4).toUpperCase()}</span>
+                        <span className="font-label text-[9px] text-white tracking-[0.3em] font-medium uppercase font-mono">ID-{String(c.id || '').substring(0,4).toUpperCase()}</span>
                     </div>
                  </div>
                </div>

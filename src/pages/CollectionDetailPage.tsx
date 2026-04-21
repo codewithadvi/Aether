@@ -28,15 +28,34 @@ function pickTopKeywords(papers: any[], limit: number = 8) {
     .map(([word, count]) => ({ word, count }));
 }
 
+function parseAuthors(authors: unknown): string[] {
+  if (Array.isArray(authors)) {
+    return authors.map((a) => String(a)).filter(Boolean);
+  }
+
+  if (typeof authors === 'string') {
+    try {
+      const parsed = JSON.parse(authors);
+      if (Array.isArray(parsed)) return parsed.map((a) => String(a)).filter(Boolean);
+      return authors.split(',').map((s) => s.trim()).filter(Boolean);
+    } catch {
+      return authors.split(',').map((s) => s.trim()).filter(Boolean);
+    }
+  }
+
+  return [];
+}
+
 export default function CollectionDetailPage() {
   const { id, token } = useParams<{ id?: string; token?: string }>();
   const navigate = useNavigate();
   const qc = useQueryClient();
   const [collaboratorEmail, setCollaboratorEmail] = useState('');
   const [collaboratorRole, setCollaboratorRole] = useState<'editor' | 'viewer'>('editor');
+  const [paperSearch, setPaperSearch] = useState('');
   const [activeTab, setActiveTab] = useState<'papers'|'synthesis'|'export'>('papers');
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, error } = useQuery({
     queryKey: ['collection', id, token],
     queryFn: () => {
       if (token) return api.get(`/collections/shared/${token}`).then(r => r.data.data);
@@ -78,12 +97,29 @@ export default function CollectionDetailPage() {
     enabled: !!collectionId && activeTab === 'synthesis',
   });
 
+  const { data: allPapersRes } = useQuery({
+    queryKey: ['papers-for-collection-picker'],
+    queryFn: () => api.get('/papers', { params: { page: 1, limit: 100, sortBy: 'created_at' } }).then(r => r.data),
+    enabled: canEdit,
+  });
+
   const removePaper = useMutation({
     mutationFn: (paperId: string) => api.delete(`/collections/${collectionId}/papers/${paperId}`),
     onSuccess: () => {
       toast.success('Paper removed');
       qc.invalidateQueries({ queryKey: ['collection', id, token] });
+      qc.invalidateQueries({ queryKey: ['collection-stats', collectionId] });
     },
+  });
+
+  const addPaper = useMutation({
+    mutationFn: (paperId: string) => api.post(`/collections/${collectionId}/papers`, { paper_id: paperId }),
+    onSuccess: () => {
+      toast.success('Paper added to collection');
+      qc.invalidateQueries({ queryKey: ['collection', id, token] });
+      qc.invalidateQueries({ queryKey: ['collection-stats', collectionId] });
+    },
+    onError: (err: any) => toast.error(err.response?.data?.error?.message || 'Failed to add paper'),
   });
 
   const deleteCollection = useMutation({
@@ -158,9 +194,20 @@ export default function CollectionDetailPage() {
     }
   };
 
-  if (isLoading) return <div className="page flex justify-center p-8"><div className="w-8 h-8 border-4 border-t-[#3b82f6] rounded-full animate-spin" /></div>;
-
-  const papers = data?.papers || [];
+  const papers = (Array.isArray(data?.papers) ? data.papers : []).filter((p: any) => p && typeof p === 'object');
+  const allPapers = (Array.isArray(allPapersRes?.data) ? allPapersRes.data : []).filter((p: any) => p && typeof p === 'object');
+  const safeContradictionSignals = (Array.isArray(contradictionSignals) ? contradictionSignals : []).filter((s: any) => s && typeof s === 'object');
+  const safeComparisonRows = (Array.isArray(comparisonRows) ? comparisonRows : []).filter((r: any) => r && typeof r === 'object');
+  const existingPaperIds = new Set(papers.map((p: any) => p.id).filter(Boolean));
+  const candidatePapers = allPapers
+    .filter((p: any) => p?.id && !existingPaperIds.has(p.id))
+    .filter((p: any) => {
+      if (!paperSearch.trim()) return true;
+      const q = paperSearch.toLowerCase();
+      const authors = parseAuthors(p.authors).join(' ').toLowerCase();
+      return (p.title || '').toLowerCase().includes(q) || authors.includes(q);
+    })
+    .slice(0, 10);
 
   const synthesis = useMemo(() => {
     const fieldCounts: Record<string, number> = {};
@@ -232,6 +279,28 @@ export default function CollectionDetailPage() {
     };
   }, [papers]);
 
+  if (isLoading) return <div className="page flex justify-center p-8"><div className="w-8 h-8 border-4 border-t-[#3b82f6] rounded-full animate-spin" /></div>;
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-transparent p-12 lg:p-20 max-w-[1600px] fade-in relative">
+        <button className="font-label text-[10px] uppercase tracking-widest text-[#86736e] hover:text-[#1d1c17] mb-8 flex items-center gap-2 border-none bg-transparent cursor-pointer" onClick={() => navigate('/collections')}>
+          <ArrowLeft size={14} /> Back to Library
+        </button>
+        <div className="bg-[#f8f3eb] border border-[#d9c1bc]/40 rounded-sm p-10">
+          <h2 className="font-headline text-3xl text-[#1d1c17] mb-3">Could not open this collection</h2>
+          <p className="font-serif text-[#86736e] mb-6">Try refreshing once. If this keeps happening, the collection data may be malformed and needs repair.</p>
+          <button
+            className="px-6 py-3 rounded-sm text-[10px] font-label uppercase tracking-widest bg-[#713324] text-white hover:bg-[#8e4a39]"
+            onClick={() => window.location.reload()}
+          >
+            Refresh Page
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-transparent p-12 lg:p-20 max-w-[1600px] fade-in relative">
       <button className="font-label text-[10px] uppercase tracking-widest text-[#86736e] hover:text-[#1d1c17] mb-8 flex items-center gap-2 border-none bg-transparent cursor-pointer" onClick={() => navigate('/collections')}>
@@ -274,6 +343,43 @@ export default function CollectionDetailPage() {
 
       {activeTab === 'papers' && (
         <>
+          {canEdit && (
+            <div className="mb-10 bg-[#f8f3eb] border border-[#d9c1bc]/40 p-6 rounded-sm">
+              <h5 className="font-headline font-light text-2xl text-[#1d1c17] mb-3">Add Papers To This Collection</h5>
+              <p className="font-serif text-sm text-[#86736e] mb-4">Search your archive and add papers directly from this page.</p>
+              <input
+                className="w-full bg-white border border-[#d9c1bc]/60 px-4 py-3 rounded-sm text-sm outline-none focus:border-[#2a697b]"
+                placeholder="Search by title or author"
+                value={paperSearch}
+                onChange={e => setPaperSearch(e.target.value)}
+              />
+              <div className="mt-4 space-y-2">
+                {candidatePapers.length === 0 ? (
+                  <p className="text-sm font-serif text-[#86736e] italic">No matching papers available to add.</p>
+                ) : (
+                  candidatePapers.map((p: any) => {
+                    const candidateAuthors = parseAuthors(p.authors);
+                    return (
+                      <div key={p.id} className="flex items-center justify-between bg-white border border-[#d9c1bc]/40 rounded-sm px-4 py-3 gap-4">
+                        <div>
+                          <p className="text-sm font-serif text-[#1d1c17]">{p.title}</p>
+                          <p className="text-[10px] font-label uppercase tracking-widest text-[#86736e]">{candidateAuthors.join(', ') || 'Unknown author'}</p>
+                        </div>
+                        <button
+                          className="px-4 py-2 rounded-sm text-[10px] font-label uppercase tracking-widest bg-[#713324] text-white hover:bg-[#8e4a39] disabled:opacity-40"
+                          onClick={() => addPaper.mutate(p.id)}
+                          disabled={addPaper.isPending}
+                        >
+                          Add
+                        </button>
+                      </div>
+                    );
+                  })
+                )}
+              </div>
+            </div>
+          )}
+
           {stats && (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
               <div className="bg-[#e3d7b8]/10 p-6 border border-[#d9c1bc]/40 rounded-sm shadow-sm relative overflow-hidden">
@@ -301,14 +407,15 @@ export default function CollectionDetailPage() {
           )}
 
           <div className="space-y-4">
-            {(!data?.papers || data.papers.length === 0) ? (
+            {papers.length === 0 ? (
               <div className="p-16 border-2 border-dashed border-[#d9c1bc]/40 rounded-sm text-center bg-[#fef9f1]">
                 <p className="font-serif italic text-xl text-[#86736e] mb-4">The volume is currently empty.</p>
                 <button className="bg-[#713324] text-white px-6 py-4 rounded-sm text-[10px] font-label uppercase tracking-widest shadow-md hover:bg-[#8e4a39] transition-colors" onClick={() => navigate('/papers')}>Acquire Manuscripts</button>
               </div>
             ) : (
-              data.papers.map((p: any) => {
-                const authors = Array.isArray(p.authors) ? p.authors : JSON.parse(p.authors || '[]');
+              papers.map((p: any) => {
+                const authors = parseAuthors(p.authors);
+                const contributorLabel = p.added_by_name || p.added_by_email || 'Unknown contributor';
                 return (
                   <div key={p.id} className="group bg-[#f8f3eb] border border-[#d9c1bc]/40 p-6 rounded-sm hover:border-[#2a697b] transition-all cursor-pointer relative" onClick={() => navigate(`/papers/${p.id}`)}>
                     <div className="flex items-start justify-between gap-4">
@@ -317,9 +424,12 @@ export default function CollectionDetailPage() {
                         <div className="flex items-center gap-3 font-label text-[9px] text-[#86736e] uppercase tracking-widest">
                           {p.field && <span className="text-[#2a697b] font-bold tracking-[0.3em]">{p.field}</span>}
                           <span>•</span>
-                          <span>{authors.join(', ')}</span>
+                          <span>{authors.join(', ') || 'Unknown author'}</span>
                           {p.venue && <span>• {p.venue}</span>}
                         </div>
+                        <p className="mt-2 text-[10px] font-label uppercase tracking-widest text-[#86736e]">
+                          Added by {contributorLabel}{p.added_at ? ` on ${new Date(p.added_at).toLocaleDateString()}` : ''}
+                        </p>
                       </div>
                       {canEdit && (
                         <button className="opacity-0 group-hover:opacity-100 p-2 text-red-500 hover:bg-red-50 rounded transition-all" onClick={e => { e.stopPropagation(); removePaper.mutate(p.id); }}>
@@ -437,11 +547,11 @@ export default function CollectionDetailPage() {
                   <p className="font-label text-[10px] uppercase tracking-widest text-[#86736e]">Contradiction Engine Signals</p>
                   <span className="text-[9px] font-label uppercase tracking-widest text-[#2a697b]">Evidence-linked</span>
                 </div>
-                {!contradictionSignals || contradictionSignals.length === 0 ? (
+                {safeContradictionSignals.length === 0 ? (
                   <p className="font-serif italic text-[#86736e] text-sm">No high-confidence contradiction pairs detected yet for this collection.</p>
                 ) : (
                   <div className="space-y-3">
-                    {contradictionSignals.slice(0, 6).map((sig: any, idx: number) => (
+                    {safeContradictionSignals.slice(0, 6).map((sig: any, idx: number) => (
                       <div key={`${sig.paper_a?.id}-${sig.paper_b?.id}-${idx}`} className="p-4 bg-[#fef9f1] border border-[#d9c1bc]/60 rounded-sm">
                         <div className="flex items-center justify-between mb-2">
                           <p className="text-[9px] font-label uppercase tracking-widest text-[#2a697b]">Confidence {(sig.confidence * 100).toFixed(0)}%</p>
@@ -461,7 +571,7 @@ export default function CollectionDetailPage() {
 
               <div className="bg-[#f8f3eb] border border-[#d9c1bc]/50 rounded-sm p-6 overflow-hidden">
                 <p className="font-label text-[10px] uppercase tracking-widest text-[#86736e] mb-4">Methods & Benchmark Comparison</p>
-                {!comparisonRows || comparisonRows.length === 0 ? (
+                {safeComparisonRows.length === 0 ? (
                   <p className="font-serif italic text-[#86736e] text-sm">No comparison rows available yet.</p>
                 ) : (
                   <div className="overflow-x-auto">
@@ -474,7 +584,7 @@ export default function CollectionDetailPage() {
                         </tr>
                       </thead>
                       <tbody>
-                        {comparisonRows.slice(0, 20).map((row: any) => (
+                        {safeComparisonRows.slice(0, 20).map((row: any) => (
                           <tr key={row.paper_id} className="border-b border-[#d9c1bc]/30 align-top">
                             <td className="py-3 pr-4 text-sm font-serif text-[#1d1c17] max-w-[260px]">
                               <button className="text-left hover:text-[#2a697b]" onClick={() => navigate(`/papers/${row.paper_id}`)}>{row.title}</button>
@@ -586,10 +696,10 @@ export default function CollectionDetailPage() {
               )}
 
               <div className="space-y-2">
-                {(collaborators || []).length === 0 ? (
+                {(Array.isArray(collaborators) ? collaborators : []).length === 0 ? (
                   <p className="text-sm font-serif text-[#86736e] italic">No collaborators added yet.</p>
                 ) : (
-                  (collaborators || []).map((c: any) => (
+                  (Array.isArray(collaborators) ? collaborators : []).map((c: any) => (
                     <div key={c.id} className="flex items-center justify-between bg-white border border-[#d9c1bc]/40 rounded-sm px-4 py-3">
                       <div>
                         <p className="text-sm font-serif text-[#1d1c17]">{c.name || c.email}</p>
