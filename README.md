@@ -1,9 +1,5 @@
 
-<h3 align="center"><em>Where knowledge finds its shape.</em></h3>
-
-<p align="center">
-  From papers to proposals — a single platform for managing, analyzing, and advancing research.
-</p>
+<h3 align="center"><em>From papers to proposals — a single platform for managing, analyzing, and advancing research.</em></h3>
 
 <p align="center">
   <a href="#features"><strong>Features</strong></a> · <a href="#how-it-works"><strong>How It Works</strong></a> · <a href="#architecture"><strong>Architecture</strong></a> · <a href="#getting-started"><strong>Get Started</strong></a> · <a href="#roadmap"><strong>Roadmap</strong></a> · <a href="#contributing"><strong>Contributing</strong></a>
