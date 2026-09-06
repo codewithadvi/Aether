@@ -24,8 +24,8 @@ export function configurePassport() {
     passport.use(new GitHubStrategy({
       clientID: process.env.GITHUB_CLIENT_ID!,
       clientSecret: process.env.GITHUB_CLIENT_SECRET!,
-      callbackURL: `http://localhost:${process.env.PORT || 3001}/api/auth/oauth/github/callback`,
-    }, async (accessToken, refreshToken, profile, done) => {
+      callbackURL: `${process.env.BACKEND_URL || `http://localhost:${process.env.PORT || 3001}`}/api/auth/oauth/github/callback`,
+    }, async (accessToken: string, refreshToken: string, profile: any, done: any) => {
       try {
         const email = profile.emails?.[0]?.value || `github_${profile.id}@noemail.com`;
         let { rows } = await query('SELECT * FROM users WHERE github_id = $1 OR email = $2', [profile.id, email]);
@@ -46,8 +46,8 @@ export function configurePassport() {
     passport.use(new GoogleStrategy({
       clientID: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-      callbackURL: `http://localhost:${process.env.PORT || 3001}/api/auth/oauth/google/callback`,
-    }, async (accessToken, refreshToken, profile, done) => {
+      callbackURL: `${process.env.BACKEND_URL || `http://localhost:${process.env.PORT || 3001}`}/api/auth/oauth/google/callback`,
+    }, async (accessToken: string, refreshToken: string, profile: any, done: any) => {
       try {
         const email = profile.emails?.[0]?.value!;
         let { rows } = await query('SELECT * FROM users WHERE google_id = $1 OR email = $2', [profile.id, email]);
