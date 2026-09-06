@@ -118,7 +118,7 @@ async function getUserBadges(userId: string) {
 
 async function getRecentPapers(userId: string) {
   const { rows } = await query(
-    'SELECT id, title, authors, field, venue, read_at FROM papers WHERE user_id = $1 ORDER BY read_at DESC LIMIT 5',
+    'SELECT id, title, authors, field, venue, abstract, doi, read_at FROM papers WHERE user_id = $1 ORDER BY read_at DESC LIMIT 5',
     [userId]
   );
   return rows;
