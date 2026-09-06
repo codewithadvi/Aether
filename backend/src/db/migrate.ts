@@ -45,6 +45,19 @@ CREATE TABLE IF NOT EXISTS papers (
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
+-- Additive columns for papers (safe to re-run)
+ALTER TABLE papers
+  ADD COLUMN IF NOT EXISTS external_id VARCHAR(255);
+
+ALTER TABLE papers
+  ADD COLUMN IF NOT EXISTS methodology JSONB DEFAULT '{
+    "architecture": null,
+    "data_source": null,
+    "metrics": { "accuracy": null, "latency": null, "recall": null }
+  }';
+
+CREATE INDEX IF NOT EXISTS idx_papers_external_id ON papers(external_id) WHERE external_id IS NOT NULL;
+
 CREATE UNIQUE INDEX IF NOT EXISTS idx_papers_user_doi ON papers(user_id, doi) WHERE doi IS NOT NULL;
 CREATE INDEX IF NOT EXISTS idx_papers_user_id ON papers(user_id);
 CREATE INDEX IF NOT EXISTS idx_papers_field ON papers(field);

@@ -11,7 +11,7 @@ function AddPaperModal({ onClose }: { onClose: () => void }) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [form, setForm] = useState({ doi: '', url: '', title: '', authors: '', abstract: '', venue: '', field: '', publication_date: '', external_id: '' });
   const [loading, setLoading] = useState(false);
-  const [view, setView] = useState<'doi_entry' | 'manual_entry' | 'search'>('doi_entry');
+  const [view, setView] = useState<'doi_entry' | 'manual_entry' | 'search'>('search');
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const [searching, setSearching] = useState(false);
@@ -21,8 +21,8 @@ function AddPaperModal({ onClose }: { onClose: () => void }) {
     if (!searchQuery.trim()) return;
     setSearching(true);
     try {
-      const res = await api.get(`/semantic-scholar/search?query=${encodeURIComponent(searchQuery)}&limit=5`);
-      setSearchResults(res.data.data);
+      const res = await api.get(`/semantic-scholar/search?query=${encodeURIComponent(searchQuery)}&limit=8`);
+      setSearchResults(Array.isArray(res.data?.data) ? res.data.data : []);
     } catch (err) {
       toast.error('Search failed');
     } finally { setSearching(false); }
@@ -85,7 +85,7 @@ function AddPaperModal({ onClose }: { onClose: () => void }) {
              <h3 className="text-5xl font-headline text-[#0f172a] tracking-tight mb-6">Catalog Paper</h3>
              <div className="w-16 h-px bg-[#2a697b]/50 mb-6"></div>
              <p className="font-serif italic text-[#475569] max-w-sm leading-relaxed">
-               Provide a DOI or identifier to auto-pull library metadata, or enter details manually.
+               Search the global research graph by title or author, or switch to DOI / manual entry below.
              </p>
            </div>
 
@@ -160,9 +160,9 @@ function AddPaperModal({ onClose }: { onClose: () => void }) {
               )}
 
              <div className="w-full pt-6 border-t border-[#cbd5e1]/30 flex flex-col gap-3">
-               <div className="flex justify-center gap-6">
+               <div className="flex justify-center items-center gap-5">
+                 <button type="button" onClick={() => setView('search')} className={`font-label text-[10px] uppercase tracking-widest px-4 py-2 rounded-sm transition-all ${view === 'search' ? 'bg-[#3b82f6] text-white font-bold shadow-md' : 'text-[#64748b] hover:text-[#3b82f6] border border-[#cbd5e1]'}`}>Global Search</button>
                  <button type="button" onClick={() => setView('doi_entry')} className={`font-label text-[9px] uppercase tracking-widest transition-colors ${view === 'doi_entry' ? 'text-[#3b82f6] font-bold' : 'text-[#94a3b8] hover:text-[#3b82f6]'}`}>DOI Entry</button>
-                 <button type="button" onClick={() => setView('search')} className={`font-label text-[9px] uppercase tracking-widest transition-colors ${view === 'search' ? 'text-[#3b82f6] font-bold' : 'text-[#94a3b8] hover:text-[#3b82f6]'}`}>Global Search</button>
                  <button type="button" onClick={() => setView('manual_entry')} className={`font-label text-[9px] uppercase tracking-widest transition-colors ${view === 'manual_entry' ? 'text-[#3b82f6] font-bold' : 'text-[#94a3b8] hover:text-[#3b82f6]'}`}>Manual & PDF</button>
                </div>
              </div>
