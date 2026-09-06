@@ -6,20 +6,25 @@ fail() { echo "pre-commit: $1" >&2; exit 1; }
 
 staged=$(git diff --cached --name-only --diff-filter=ACM)
 
-# 1. Never allow env files (any directory), except *.example
+# 1. Never allow env files (any directory), except *.example / *.sample
 for f in $staged; do
-  case "$f" in
-    *.env.example|*.env.sample) ;;
-    .env|*/.env|.env.*|*/.env.*)
-      fail "refusing to commit env file: $f  (add it to .gitignore / keep it local)" ;;
+  base=$(basename "$f")
+  case "$base" in
+    *.example|*.sample) continue ;;
+  esac
+  case "$base" in
+    .env|.env.*|*.env) fail "refusing to commit env file: $f  (keep it local / .gitignore it)" ;;
   esac
 done
 
 # 2. Catch pasted secrets in any staged file
-if git diff --cached -U0 | grep -nE '^\+' \
-   | grep -iE '(api[_-]?key|secret|token|password|bearer)[[:space:]]*[:=][[:space:]]*[A-Za-z0-9/_+.-]{16,}' \
-   | grep -vE '(placeholder|change-in-production|your[_-]|example|xxumtxx|<.*>)' ; then
-  fail "possible hardcoded secret in staged changes (shown above). Use an env var."
+if git diff --cached -U0 | grep -E '^\+' \
+   | grep -iE '(api[_-]?key|secret[_-]?key|access[_-]?token|auth[_-]?token|client[_-]?secret|password|bearer|-----BEGIN [A-Z ]*PRIVATE KEY-----)[^A-Za-z0-9]{0,4}[:=][[:space:]]*["'"'"']?[A-Za-z0-9/_+=.-]{16,}' \
+   | grep -vqiE '(placeholder|change-in-production|change[_-]me|your[_-]|example|dummy|<[^>]+>|\*\*\*)' ; then
+  echo "pre-commit: possible hardcoded secret in staged changes:" >&2
+  git diff --cached -U0 | grep -E '^\+' \
+    | grep -inE '(api[_-]?key|secret[_-]?key|access[_-]?token|auth[_-]?token|client[_-]?secret|password|bearer)[^A-Za-z0-9]{0,4}[:=]' >&2
+  fail "use an environment variable instead. Override with 'git commit --no-verify' if this is a false positive."
 fi
 
 exit 0
