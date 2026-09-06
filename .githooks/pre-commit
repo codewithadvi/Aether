@@ -1,0 +1,25 @@
+#!/bin/sh
+# Blocks committing secret files or obvious secrets.
+# Enable once per clone:  git config core.hooksPath .githooks
+
+fail() { echo "pre-commit: $1" >&2; exit 1; }
+
+staged=$(git diff --cached --name-only --diff-filter=ACM)
+
+# 1. Never allow env files (any directory), except *.example
+for f in $staged; do
+  case "$f" in
+    *.env.example|*.env.sample) ;;
+    .env|*/.env|.env.*|*/.env.*)
+      fail "refusing to commit env file: $f  (add it to .gitignore / keep it local)" ;;
+  esac
+done
+
+# 2. Catch pasted secrets in any staged file
+if git diff --cached -U0 | grep -nE '^\+' \
+   | grep -iE '(api[_-]?key|secret|token|password|bearer)[[:space:]]*[:=][[:space:]]*[A-Za-z0-9/_+.-]{16,}' \
+   | grep -vE '(placeholder|change-in-production|your[_-]|example|xxumtxx|<.*>)' ; then
+  fail "possible hardcoded secret in staged changes (shown above). Use an env var."
+fi
+
+exit 0
